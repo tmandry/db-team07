@@ -1,5 +1,7 @@
 bin/
 obj/
+html/
+latex/
 *.user
 *.suo
 *.sublime-project
