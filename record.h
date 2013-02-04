@@ -32,7 +32,7 @@ public:
   template <typename S>;
   //! Set the value of an attribute
   /**
-    \param T the expected type of the attribute
+    \param S the expected type of the attribute
     \param attribute the name of the attribute (column) in the record.
    */
   bool set(string attribute, <S> value); //!< Set the value of an attribute, returns true unless there was an error

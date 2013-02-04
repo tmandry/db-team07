@@ -1,6 +1,6 @@
 bin/
 obj/
-html/
+doc/
 latex/
 *.user
 *.suo

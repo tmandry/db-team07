@@ -52,6 +52,39 @@ public:
     \param where the conditions for the query to match
    */
   void delete(string select, string from, string where);
+
+  //! Mass modify records in table
+  /**
+    \param table name of the table to update records in
+    \param where a SQL where clause to find records in the table
+    \param set a SQL set clause
+   */
+  void update(string table, string where, string set);
+
+  //! Save the database to a file
+  /**
+   \param filename the output file
+   */
+  void save(string filename);
+
+  //! Load a database from a file, this will clear any existing records
+  /**
+   \param filename the input file
+   */
+  void load(string filename);
+
+  //! Merge two another database into this one
+  /**
+    \param database A pointer to the database that you want to merge INTO this
+           one. The database at the pointer will not be affected.
+   */
+   void merge(Database* database);
+
+   //! Make a copy of this database
+   /**
+     \returns a one for one copy / clone of this database
+    */
+   Database copy();
 };
 
 #endif
