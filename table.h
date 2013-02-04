@@ -20,7 +20,8 @@ public:
     integer        = 1,
     floating       = 2,
     varchar        = 3,
-    date           = 4
+    date           = 4,
+    time           = 5
   };
 
   /** Creates a table with no rows or columns. */
@@ -46,6 +47,17 @@ public:
   /** Returns a list of columns and their types. */
   vector<pair<string, RecordType>> columns() const;
 
+  /**
+   * Defines the tuple of columns used as a key.
+   * \param columns A list of column names that make up the key.
+   *
+   * Every row in the table must have a unique key. If a new row is inserted
+   * with a key that already exists in the table, insertion will fail.
+   *
+   * This function must be called before inserting any rows into the table.
+   */
+  void set_key(vector<string> columns);
+
   /** Returns the number of rows in the table. */
   int size() const;
 
@@ -66,6 +78,14 @@ public:
    * tables.
    */
   Table cross_join(const Table& other) const;
+
+  /**
+   * Computes a natural join with another table.
+   *
+   * The other table should have a key, and this table should have columns
+   * matching that key.
+   */
+  Table natural_join(const Table& other) const;
 
   /**
    * Computes the number of non-NULL values in the given column in the table.
