@@ -41,7 +41,12 @@ public:
   map<string, Table*> get_tables();
 
   /**
-    Perform a query on the database
+    Perform a query on the database. An example query:
+
+    ~~~{.cpp}
+    myDatabase.query("name", "students", "gender == 'male'");
+    ~~~
+
     \param select which columns to include in the returned Table
     \param from which table to query from
     \param where the conditions for the query to match
@@ -58,7 +63,16 @@ public:
   void delete(string select, string from, string where);
 
   /**
-    Mass modify records in table
+    Mass modify records in table. Examples:
+
+    ~~~{.cpp}
+    myDatabase.update("students", "gender == 'male'", "gender = 'm'");
+
+    myDatabase.update("students", "gender == 'male'", "gender = 'm', school = 'A&M'");
+
+    myDatabase.update("students", "gender == 'female'", "age = age * 2");
+    ~~~
+
     \param table name of the table to update records in
     \param where a SQL where clause to find records in the table
     \param set a SQL set clause
@@ -78,9 +92,9 @@ public:
   void load(string filename);
 
   /**
-    Merge two another database into this one
+    Merge two another database into this one. The database at the pointer will not be affected.
     \param database A pointer to the database that you want to merge INTO this
-           one. The database at the pointer will not be affected.
+           one.
    */
    void merge(Database* database);
 

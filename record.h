@@ -23,7 +23,12 @@ public:
 
   template <typename T>;
   /**
-    Get the value of an attribute
+    Get the value of an attribute. Example:
+
+    ~~~{.cpp}
+    myRecord.get<int>("age");
+    ~~~
+
     \param T the expected type of the attribute
     \param attribute the name of the attribute (column) in the record.
    */
@@ -31,7 +36,12 @@ public:
 
   template <typename S>;
   /**
-    Set the value of an attribute
+    Set the value of an attribute. Example:
+
+    ~~~{.cpp}
+    myRecord.set<int>("age", 21);
+    ~~~
+
     \param S the expected type of the attribute
     \param attribute the name of the attribute (column) in the record.
    */
