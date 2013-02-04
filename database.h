@@ -56,11 +56,10 @@ public:
 
   /**
     Delete all records that match the query
-    \param select which columns to include in the returned Table
     \param from which table to query from
     \param where the conditions for the query to match
    */
-  void delete(string select, string from, string where);
+  void delete(string from, string where);
 
   /**
     Mass modify records in table. Examples:
