@@ -7,11 +7,11 @@ class Table
 {
 public:
   enum RecordType {
-    type_unknown = 0,
-    type_integer,
-    type_floating,
-    type_varchar,
-    type_date
+    undefined_type = 0,
+    integer = 1,
+    floating = 2,
+    varchar = 3,
+    date = 4
   };
 
   // Default constructor. Creates a table with no rows or columns.
