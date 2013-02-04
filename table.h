@@ -2,6 +2,12 @@
 #define TABLE_H_
 
 #include <deque>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Record;
 
 /**
  * A table.
@@ -24,9 +30,17 @@ public:
     time           = 5
   };
 
+  /**
+   * A const iterator over the records in a table.
+   *
+   * Do not depend on the underlying type of TableIterator in your code, but
+   * rather a generic iterator interface.
+   */
+  typedef deque<Record>::const_iterator TableIterator;
+
   /** Creates a table with no rows or columns. */
   Table();
-  /** Creates a table with the given field names and types. */
+  /** Creates a table with the given column names and types and no rows. */
   Table(pair<string, RecordType> fields[]);
 
   ~Table();
@@ -65,11 +79,11 @@ public:
   void insert(const Record& record);
 
   /**
-   * A Table can be treated as a container. The **begin** and **end** functions
+   * A Table can be treated as a container. The *begin* and *end* functions
    * correspond to C++ STL container begin and end functions.
    */
-  RecordIterator begin() const;
-  RecordIterator end() const;
+  TableIterator begin() const;
+  TableIterator end() const;
 
   /**
    * Computes a cross join with another table.
