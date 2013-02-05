@@ -38,10 +38,22 @@ public:
    */
   typedef deque<Record>::const_iterator TableIterator;
 
+  typedef vector<pair<string, RecordType> > ColumnList;
+
   /** Creates a table with no rows or columns. */
   Table();
-  /** Creates a table with the given column names and types and no rows. */
-  Table(pair<string, RecordType> fields[]);
+  /**
+   * Creates a table with the given column names and types and no rows.
+   *
+   * Example:
+   * ~~~{.cpp}
+   * Table::ColumnList columns;
+   * columns.push_back(make_pair("id", Table::integer));
+   * columns.push_back(make_pair("name", Table::varchar));
+   * Table my_table(columns);
+   * ~~~
+   */
+  Table(const ColumnList& columns);
 
   ~Table();
 
@@ -50,16 +62,16 @@ public:
    *
    * Existing entries will be NULL for this column.
    */
-  void add_column(string name, RecordType type);
+  void add_column(string column_name, RecordType type);
 
   /** Deletes a column, erasing any associated data. */
-  void del_column(string name);
+  void del_column(string column_name);
 
   /** Renames a column, keeping the existing type and data. */
   void rename_column(string from, string to);
 
   /** Returns a list of columns and their types. */
-  vector<pair<string, RecordType>> columns() const;
+  ColumnList columns() const;
 
   /**
    * Defines the tuple of columns used as a key.
@@ -70,7 +82,7 @@ public:
    *
    * This function must be called before inserting any rows into the table.
    */
-  void set_key(vector<string> columns);
+  void set_key(vector<string> column_names);
 
   /** Returns the number of rows in the table. */
   int size() const;
@@ -80,10 +92,15 @@ public:
 
   /**
    * A Table can be treated as a container. The *begin* and *end* functions
-   * correspond to C++ STL container begin and end functions.
+   * correspond to C++ STL container begin and end functions, as do *first*,
+   * *last*, and *at*.
    */
   TableIterator begin() const;
   TableIterator end() const;
+
+  const Record& first() const;
+  const Record& last() const;
+  const Record& at(unsigned int i) const;
 
   /**
    * Computes a cross join with another table.
@@ -104,25 +121,25 @@ public:
   /**
    * Computes the number of non-NULL values in the given column in the table.
    */
-  int count(string column) const;
+  int count(string column_name) const;
 
   /**
    * Computes the sum of all values in the given column in the table.
    */
   template<typename T>
-  T sum(string column) const;
+  T sum(string column_name) const;
 
   /**
    * Computes the smallest value of all values in the given column in the table.
    */
   template<typename T>
-  T min(string column) const;
+  T min(string column_name) const;
 
   /**
    * Computes the largest value of all values in the given column in the table.
    */
   template<typename T>
-  T max(string column) const;
+  T max(string column_name) const;
 
 private:
   deque<Record> records_;
