@@ -6,47 +6,52 @@
 using namespace std;
 
 /**
- * Allows for read and write access of attribute values.
+ * Allows for read and write access of field values.
  */
 class Record {
-
 public:
+  /**
+    Create a record with no fields and no data.
+    */
   Record();
   /**
     Create a record with existing entries
-    \param new_entries a std::map where the key is the name of the entry and the
-           value is the value of the attribute.
+    \param entries a std::vector of pairs, with the first element in the pair
+           being the field/column name, and the second element being the value.
    */
-  Record(map<string, string> new_entries);
+  Record(vector<pair<string, string> > entries);
 
   ~Record();
 
   /**
-    Get the value of an attribute. Example:
+    Get the value of a field by column name. Example:
 
     ~~~{.cpp}
     myRecord.get<int>("age");
+    string name = myRecord.get("name");  // type T is inferred
     ~~~
 
-    \param T the expected type of the attribute
-    \param attribute the name of the attribute (column) in the record.
+    \param T The expected type of the field
+    \param field The name of the field (column) in the record.
    */
   template <typename T>
-  T get(string attribute);
+  T get(string field);
 
   /**
-    Set the value of an attribute. Example:
+    Set the value of a field by column name. Example:
 
     ~~~{.cpp}
-    myRecord.set<int>("age", 21);
+    myRecord.set("age", 21);
     ~~~
 
-    \param S the expected type of the attribute
-    \param attribute the name of the attribute (column) in the record.
+    \param T The type of *field*; usually inferred by the compiler.
+    \param field The name of the field (column) in the record.
    */
   template <typename T>
-  bool set(string attribute, <T> value);
+  bool set(string field, T value);
 
+private:
+  vector<pair<string, string> > values_;
 };
 
 #endif
