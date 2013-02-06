@@ -22,12 +22,12 @@ class Table
 public:
   /** An enum specifying the type of a column. */
   enum RecordType {
-    undefined_type = 0,
-    integer        = 1,
-    floating       = 2,
-    varchar        = 3,
-    date           = 4,
-    time           = 5
+    undefined_type = 0, ///< Not for normal use
+    integer        = 1, ///< 32-bit signed integer
+    floating       = 2, ///< 32-bit floating point
+    varchar        = 3, ///< Variable-length string
+    date           = 4, ///< Date with no time
+    time           = 5  ///< Time without time zone
   };
 
   /**
@@ -74,13 +74,19 @@ public:
   ColumnList columns() const;
 
   /**
+    * Returns the index of the column specified in column_name, i.e. for
+    * accessing records.
+    */
+  unsigned int index_for(string column_name) const;
+
+  /**
    * Defines the tuple of columns used as a key.
+   * This function must be called before inserting any rows into the table.
+   *
    * \param columns A list of column names that make up the key.
    *
    * Every row in the table must have a unique key. If a new row is inserted
    * with a key that already exists in the table, insertion will fail.
-   *
-   * This function must be called before inserting any rows into the table.
    */
   void set_key(vector<string> column_names);
 

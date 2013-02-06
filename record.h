@@ -2,7 +2,7 @@
 #define _RECORD_H_
 
 #include <map>
-#include<string>
+#include <string>
 using namespace std;
 
 /**
@@ -17,11 +17,10 @@ public:
     \param new_entries a std::map where the key is the name of the entry and the
            value is the value of the attribute.
    */
-  Record(map<string, string> new_entries); //!< Create a record with present entries
+  Record(map<string, string> new_entries);
 
   ~Record();
 
-  template <typename T>;
   /**
     Get the value of an attribute. Example:
 
@@ -32,9 +31,9 @@ public:
     \param T the expected type of the attribute
     \param attribute the name of the attribute (column) in the record.
    */
+  template <typename T>
   T get(string attribute);
 
-  template <typename S>;
   /**
     Set the value of an attribute. Example:
 
@@ -45,7 +44,8 @@ public:
     \param S the expected type of the attribute
     \param attribute the name of the attribute (column) in the record.
    */
-  bool set(string attribute, <S> value);
+  template <typename T>
+  bool set(string attribute, <T> value);
 
 };
 
