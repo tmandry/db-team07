@@ -7,6 +7,9 @@ using namespace std;
 
 /**
  * Allows for read and write access of field values.
+ *
+ * In the context of a table, fields are known as columns, but within a record
+ * they are called fields.
  */
 class Record {
 public:

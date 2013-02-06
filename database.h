@@ -17,16 +17,32 @@ public:
   Database();
 
   /**
-    Add a table to the database
+    Add a table to the database.
+
+    Ownership of the table is permanently transferred to the database, and it will be
+    destroyed when the database is destroyed. You MUST allocate the table with
+    *new*. Do NOT destroy the table after adding it to the database!
+
+    ~~~{.cpp}
+    Database db;
+    Table *table = new Table;
+    // add columns to table
+    db.add_table("my_table", table);
+    ~~~
+
     \param name what to call the table in the database
-    \param table the Table to be inserted into the table
+    \param table the Table to be inserted into the database
     \sa Table
    */
-  void create_table(string name, Table* table);
+  void add_table(string name, Table* table);
 
   /**
-    Remove a table from the database
+    Remove a table from the database.
+
+    The table is destroyed with *delete* when this function is called.
+
     \param name which table to remove from the database
+    \returns A pointer to the Table, which can now be destroyed.
     \sa table_names()
    */
   void drop_table(string name);
@@ -98,11 +114,10 @@ public:
   void load(string filename);
 
   /**
-    Merge another database into this one. The database at the pointer will not be affected.
-    \param database A pointer to the database that you want to merge INTO this
-                    one.
+    Merge another database into this one.
+    \param database The database that you want to merge into this one.
    */
-   void merge(Database* database);
+   void merge(const Database& database);
 
   /**
     Make a copy of this database
