@@ -11,6 +11,15 @@ using namespace std;
 class Record {
 public:
   /**
+   * A const iterator over the fields in a record.
+   *
+   * Each element accessed by the iterator is a pair. The first element is the
+   * field name, the second is the value (in string form.)
+   * \sa begin(), end()
+   */
+  typedef vector<pair<string, string> >::const_iterator RecordIterator;
+
+  /**
     Create a record with no fields and no data.
     */
   Record();
@@ -24,8 +33,25 @@ public:
   ~Record();
 
   /**
-    Get the value of a field by column name. Example:
+   * Returns an iterator to the first field in the record.
+   *
+   * Note that the RecordIterator gives you values in string form. If you want
+   * automatic conversions, use *get* instead.
+   *
+   * \sa get(), end()
+   */
+  RecordIterator begin() const;
+  /**
+   * Returns an iterator past the end of the fields in the record.
+   * \sa begin()
+   */
+  RecordIterator end() const;
 
+  /**
+    Get the value of a field by column name. The field is converted to the
+    requested C++ type if possible (otherwise, an exception is thrown.)
+
+    Example:
     ~~~{.cpp}
     myRecord.get<int>("age");
     string name = myRecord.get<string>("name");
