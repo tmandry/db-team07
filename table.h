@@ -74,8 +74,7 @@ public:
   ColumnList columns() const;
 
   /**
-    * Returns the index of the column specified in column_name, i.e. for
-    * accessing records.
+    * Returns the index of the column specified in column_name, i.e. for accessing records.
     */
   unsigned int index_for(string column_name) const;
 

@@ -13,7 +13,8 @@
  */
 class Database {
 public:
-  Database(); //!< Creates an empty database
+  /** Creates an empty database */
+  Database();
 
   /**
     Add a table to the database
@@ -26,7 +27,7 @@ public:
   /**
     Remove a table from the database
     \param name which table to remove from the database
-    \sa table_list()
+    \sa table_names()
    */
   void drop_table(string name);
 
@@ -42,10 +43,15 @@ public:
   Table* table(string table_name);
 
   /**
-    Perform a query on the database. An example query:
+    Perform a query on the database. Here are some examples of possible queries:
 
     ~~~{.cpp}
-    myDatabase.query("name", "students", "gender == 'male'");
+    myDatabase.query("name", "students", "gender = 'male'");
+    myDatabase.query("name", "students", "(gender = 'male' AND age > 21) OR age > 65");
+    myDatabase.query("name", "students", "gender = 'female' AND id IN good_students");
+    myDatabase.query("*", "students", "gpa >= ALL(good_student_gpas)");
+    myDatabase.query("id", "students", "gpa >= ANY(good_student_gpas) AND NOT (id IN good_students)");
+    myDatabase.query("*", "students", "EXISTS(good_students)");
     ~~~
 
     \param select which columns to include in the returned Table
@@ -66,11 +72,11 @@ public:
     Mass modify records in table. Examples:
 
     ~~~{.cpp}
-    myDatabase.update("students", "gender == 'male'", "gender = 'm'");
+    myDatabase.update("students", "gender = 'male'", "gender = 'm'");
 
-    myDatabase.update("students", "gender == 'male'", "gender = 'm', school = 'A&M'");
+    myDatabase.update("students", "gender = 'male'", "gender = 'm', school = 'A&M'");
 
-    myDatabase.update("students", "gender == 'female'", "age = age * 2");
+    myDatabase.update("students", "gender = 'female'", "age = age * 2");
     ~~~
 
     \param table name of the table to update records in
@@ -92,15 +98,15 @@ public:
   void load(string filename);
 
   /**
-    Merge two another database into this one. The database at the pointer will not be affected.
+    Merge another database into this one. The database at the pointer will not be affected.
     \param database A pointer to the database that you want to merge INTO this
-           one.
+                    one.
    */
    void merge(Database* database);
 
   /**
     Make a copy of this database
-    \returns a one for one copy / clone of this database
+    \returns a one-for-one copy / clone of this database
    */
   Database copy();
 };

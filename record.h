@@ -28,7 +28,7 @@ public:
 
     ~~~{.cpp}
     myRecord.get<int>("age");
-    string name = myRecord.get("name");  // type T is inferred
+    string name = myRecord.get<string>("name");
     ~~~
 
     \param T The expected type of the field
@@ -42,6 +42,7 @@ public:
 
     ~~~{.cpp}
     myRecord.set("age", 21);
+    myRecord.set("name", "Abraham Lincoln");
     ~~~
 
     \param T The type of *field*; usually inferred by the compiler.
