@@ -60,6 +60,8 @@ public:
     string name = myRecord.get<string>("name");
     ~~~
 
+    Throws an exception if \a field doesn't exist.
+
     \param T The expected type of the field
     \param field The name of the field (column) in the record.
    */
@@ -74,11 +76,13 @@ public:
     myRecord.set("name", "Abraham Lincoln");
     ~~~
 
+    Throws an exception if \a field doesn't exist.
+
     \param T The type of *field*; usually inferred by the compiler.
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  bool set(string field, T value);
+  void set(string field, T value);
 
 private:
   vector<pair<string, string> > values_;

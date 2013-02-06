@@ -64,18 +64,26 @@ public:
    */
   void add_column(string column_name, RecordType type);
 
-  /** Deletes a column, erasing any associated data. */
+  /**
+   * Deletes a column, erasing any associated data.
+   *
+   * Throws an exception if \a column_name doesn't exist.
+   */
   void del_column(string column_name);
 
-  /** Renames a column, keeping the existing type and data. */
+  /**
+   * Renames a column, keeping the existing type and data.
+   * Throws an exception if \a from doesn't exist.
+   */
   void rename_column(string from, string to);
 
   /** Returns a list of columns and their types. */
   ColumnList columns() const;
 
   /**
-    * Returns the index of the column specified in column_name, i.e. for accessing records.
-    */
+   * Returns the index of the column specified in column_name, i.e. for accessing records.
+   * Throws an exception if \a from doesn't exist.
+   */
   unsigned int index_for(string column_name) const;
 
   /**
@@ -86,13 +94,19 @@ public:
    *
    * Every row in the table must have a unique key. If a new row is inserted
    * with a key that already exists in the table, insertion will fail.
+   *
+   * Throws an exception if any of the \a column_names don't exist.
+   * Throws an exception if called on a table with rows.
    */
   void set_key(vector<string> column_names);
 
   /** Returns the number of rows in the table. */
   int size() const;
 
-  /** Inserts a row at the end of the table. */
+  /**
+   * Inserts a row at the end of the table.
+   * Throws an exception if this record would cause a primary key conflict.
+   */
   void insert(const Record& record);
 
   /**
@@ -122,7 +136,8 @@ public:
    */
   const Record& last() const;
   /**
-   * Returns the *i*th record in the table.
+   * Returns the *i*th record in the table, starting at 0.
+   * Throws an exception if \a i is out of range (< 0 or >= size().)
    * \sa first(), last(), begin(), end()
    */
   const Record& at(unsigned int i) const;
@@ -140,28 +155,34 @@ public:
    *
    * The other table should have a key, and this table should have columns
    * matching that key.
+   *
+   * Throws an exception if the above conditions are not met.
    */
   Table natural_join(const Table& other) const;
 
   /**
    * Computes the number of non-NULL values in the given column in the table.
+   * Throws an exception if \a column_name doesn't exist.
    */
   int count(string column_name) const;
 
   /**
    * Computes the sum of all values in the given column in the table.
+   * Throws an exception if \a column_name doesn't exist.
    */
   template<typename T>
   T sum(string column_name) const;
 
   /**
    * Computes the smallest value of all values in the given column in the table.
+   * Throws an exception if \a column_name doesn't exist.
    */
   template<typename T>
   T min(string column_name) const;
 
   /**
    * Computes the largest value of all values in the given column in the table.
+   * Throws an exception if \a column_name doesn't exist.
    */
   template<typename T>
   T max(string column_name) const;

@@ -30,6 +30,8 @@ public:
     db.add_table("my_table", table);
     ~~~
 
+    Throws an exception if \a name already exists in the database.
+
     \param name what to call the table in the database
     \param table the Table to be inserted into the database
     \sa Table
@@ -40,6 +42,8 @@ public:
     Remove a table from the database.
 
     The table is destroyed with *delete* when this function is called.
+
+    Throws an exception if \a name does not exist in the database.
 
     \param name which table to remove from the database
     \returns A pointer to the Table, which can now be destroyed.
@@ -54,9 +58,15 @@ public:
 
   /**
     Returns the table named *table_name* in the database.
-    Returns NULL if that table does not exist in the database.
+    Throws an exception if \a table_name does not exist in the database.
     */
   Table* table(string table_name);
+
+  /**
+    Returns the table named *table_name* in the database.
+    Returns NULL if \a table_name does not exist in the database.
+    */
+  Table* table_if_exists(string table_name);
 
   /**
     Perform a query on the database. Here are some examples of possible queries:
@@ -70,6 +80,8 @@ public:
     myDatabase.query("*", "students", "EXISTS(good_students)");
     ~~~
 
+    Throws an exception if any part of the query is invalid.
+
     \param select which columns to include in the returned Table
     \param from which table to query from
     \param where the conditions for the query to match
@@ -79,6 +91,7 @@ public:
 
   /**
     Delete all records that match the query
+    Throws an exception if any part of the query is invalid.
     \param from which table to query from
     \param where the conditions for the query to match
    */
@@ -95,6 +108,8 @@ public:
     myDatabase.update("students", "gender = 'female'", "age = age * 2");
     ~~~
 
+    Throws an exception if any part of the query is invalid.
+
     \param table name of the table to update records in
     \param where a SQL where clause to find records in the table
     \param set a SQL set clause
@@ -103,18 +118,21 @@ public:
 
   /**
     Save the database to a file
+    Throws an exception on failture.
     \param filename the output file
    */
   void save(string filename);
 
   /**
     Load a database from a file, this will clear any existing records
+    Throws an exception on failture.
     \param filename the input file
    */
   void load(string filename);
 
   /**
     Merge another database into this one.
+    Tables in this database are overwritten by tables in \a database.
     \param database The database that you want to merge into this one.
    */
    void merge(const Database& database);
