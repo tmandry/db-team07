@@ -95,7 +95,7 @@ public:
     \param from which table to query from
     \param where the conditions for the query to match
    */
-  void delete(string from, string where);
+  void delete_from(string from, string where);
 
   /**
     Mass modify records in table. Examples:
