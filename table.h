@@ -92,19 +92,39 @@ public:
   /** Returns the number of rows in the table. */
   int size() const;
 
-  /** Inserts a row to the end of a table. */
+  /** Inserts a row at the end of the table. */
   void insert(const Record& record);
 
   /**
+   * Returns an iterator to the first record in the table.
+   *
    * A Table can be treated as a container. The *begin* and *end* functions
    * correspond to C++ STL container begin and end functions, as do *first*,
    * *last*, and *at*.
+   *
+   * \sa end(), first(), last(), at()
    */
   TableIterator begin() const;
+  /**
+   * Returns an iterator past the end of the last record in the table.
+   * \sa begin()
+   */
   TableIterator end() const;
 
+  /**
+   * Returns the first record in the table.
+   * \sa last(), at()
+   */
   const Record& first() const;
+  /**
+   * Returns the last record in the table.
+   * \sa first(), at()
+   */
   const Record& last() const;
+  /**
+   * Returns the *i*th record in the table.
+   * \sa first(), last(), begin(), end()
+   */
   const Record& at(unsigned int i) const;
 
   /**
