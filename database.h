@@ -26,19 +26,20 @@ public:
   /**
     Remove a table from the database
     \param name which table to remove from the database
-    \sa list_tables()
+    \sa table_list()
    */
   void drop_table(string name);
 
   /**
-    Get a list of all the tables currently in the database
+    Returns a list of all the tables currently in the database
    */
-  vector<string> list_tables();
+  vector<string> table_names();
 
   /**
-    Get pointers to all of the tables currently in the database
-   */
-  map<string, Table*> get_tables();
+    Returns the table named *table_name* in the database.
+    Returns NULL if that table does not exist in the database.
+    */
+  Table* table(string table_name);
 
   /**
     Perform a query on the database. An example query:
