@@ -1,14 +1,3 @@
-Record();
-
-Record(vector<pair<string, string> > entries) {
-
-};
-
-~Record() {
-  
-};
-
-
 RecordIterator begin() const {
   RecordIterator it = Record::values_.begin();
   return it;
