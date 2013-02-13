@@ -7,6 +7,7 @@
 
 #include "record.h"
 #include "table.h"
+#include "exception.h"
 
 /** The entry point for creating tables, deleting records,
     and running queries.
@@ -26,11 +27,10 @@ public:
     ~~~{.cpp}
     Database db;
     Table *table = new Table;
-    // add columns to table
     db.add_table("my_table", table);
     ~~~
 
-    Throws an exception if \a name already exists in the database.
+    Throws an \a InvalidOperationError if \a name already exists in the database.
 
     \param name what to call the table in the database
     \param table the Table to be inserted into the database
@@ -43,7 +43,7 @@ public:
 
     The table is destroyed with *delete* when this function is called.
 
-    Throws an exception if \a name does not exist in the database.
+    Throws a \a TableDoesNotExistError if \a name does not exist in the database.
 
     \param name which table to remove from the database
     \returns A pointer to the Table, which can now be destroyed.
@@ -58,7 +58,7 @@ public:
 
   /**
     Returns the table named *table_name* in the database.
-    Throws an exception if \a table_name does not exist in the database.
+    Throws a \a TableDoesNotExistError if \a table_name does not exist in the database.
     */
   Table* table(string table_name);
 
@@ -80,7 +80,8 @@ public:
     myDatabase.query("*", "students", "EXISTS(good_students)");
     ~~~
 
-    Throws an exception if any part of the query is invalid.
+    Throws a \a TableDoesNotExistError if \a from does not exist.
+    Throws a \a QuerySyntaxError if \a select or \a where have a syntax error.
 
     \param select which columns to include in the returned Table
     \param from which table to query from
@@ -90,8 +91,11 @@ public:
   Table* query(string select, string from, string where);
 
   /**
-    Delete all records that match the query
-    Throws an exception if any part of the query is invalid.
+    Delete all records that match the query.
+
+    Throws a \a TableDoesNotExistError if \a from does not exist.
+    Throws a \a QuerySyntaxError if \a where has a syntax error.
+
     \param from which table to query from
     \param where the conditions for the query to match
    */
@@ -108,7 +112,8 @@ public:
     myDatabase.update("students", "gender = 'female'", "age = age * 2");
     ~~~
 
-    Throws an exception if any part of the query is invalid.
+    Throws a \a TableDoesNotExistError if \a table does not exist.
+    Throws a \a QuerySyntaxError if \a where or \a set have a syntax error.
 
     \param table name of the table to update records in
     \param where a SQL where clause to find records in the table
@@ -118,14 +123,14 @@ public:
 
   /**
     Save the database to a file
-    Throws an exception on failture.
+    Throws an \a IOError on failture.
     \param filename the output file
    */
   void save(string filename);
 
   /**
     Load a database from a file, this will clear any existing records
-    Throws an exception on failture.
+    Throws an \a IOError on failture.
     \param filename the input file
    */
   void load(string filename);

@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+#include "exception.h"
+
 /**
  * Allows for read and write access of field values.
  *
@@ -52,7 +54,7 @@ public:
 
   /**
     Get the value of a field by column name. The field is converted to the
-    requested C++ type if possible (otherwise, an exception is thrown.)
+    requested C++ type if possible (otherwise, an \a InvalidTypeError is thrown.)
 
     Example:
     ~~~{.cpp}
@@ -60,7 +62,7 @@ public:
     string name = myRecord.get<string>("name");
     ~~~
 
-    Throws an exception if \a field doesn't exist.
+    Throws a \a ColumnDoesNotExistError if \a field doesn't exist.
 
     \param T The expected type of the field
     \param field The name of the field (column) in the record.
@@ -69,14 +71,16 @@ public:
   T get(string field);
 
   /**
-    Set the value of a field by column name. Example:
+    Set the value of a field by column name. The field is converted from the
+    given C++ type if possible (otherwise, an \a InvalidTypeError is thrown.)
 
+    Example:
     ~~~{.cpp}
     myRecord.set("age", 21);
     myRecord.set("name", "Abraham Lincoln");
     ~~~
 
-    Throws an exception if \a field doesn't exist.
+    Throws a \a ColumnDoesNotExistError if \a field doesn't exist.
 
     \param T The type of *field*; usually inferred by the compiler.
     \param field The name of the field (column) in the record.
