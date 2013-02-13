@@ -1,13 +1,4 @@
-Table();
-
-Table(const ColumnList& columns) {
-
-};
-
-~Table() {
-
-};
-
+#include "table.h"
 
 void add_column(string column_name, RecordType type) { 
 
