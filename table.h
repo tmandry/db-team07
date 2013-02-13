@@ -100,6 +100,13 @@ public:
    */
   void set_key(vector<string> column_names);
 
+  /**
+   * Returns the column names that make up the key for this table.
+   *
+   * If there is no key, returns an empty vector.
+   */
+  vector<string> key() const;
+
   /** Returns the number of rows in the table. */
   int size() const;
 
