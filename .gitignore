@@ -6,3 +6,4 @@ latex/
 *.suo
 *.sublime-project
 *.sublime-workspace
+*.gch
