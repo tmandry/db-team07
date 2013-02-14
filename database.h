@@ -12,7 +12,7 @@
 /** The entry point for creating tables, deleting records,
     and running queries.
  */
-class Database {
+class EXPORT Database {
 public:
   /** Creates an empty database */
   Database();

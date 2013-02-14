@@ -18,7 +18,7 @@ class Record;
  * A table may or may not be inside a database. Often it is used for result sets
  * from queries on a larger table.
  */
-class Table
+class EXPORT Table
 {
 public:
   /** An enum specifying the type of a column. */

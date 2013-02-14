@@ -9,57 +9,59 @@
 #ifndef EXCEPTION_H_
 #define EXCEPTION_H_
 
+#define EXPORT __declspec(dllexport)
+
 #include <stdexcept>
 
 using namespace std;
 
-class ColumnDoesNotExistError : public invalid_argument {
+class EXPORT ColumnDoesNotExistError : public exception {
 public:
   ColumnDoesNotExistError(const string& what)
-    : invalid_argument(what) {}
+    : exception(what.c_str()) {}
 };
 
-class RowDoesNotExistError : public invalid_argument {
+class EXPORT RowDoesNotExistError : public exception {
 public:
   RowDoesNotExistError(const string& what)
-    : invalid_argument(what) {}
+    : exception(what.c_str()) {}
 };
 
-class TableDoesNotExistError : public invalid_argument {
+class EXPORT TableDoesNotExistError : public exception {
 public:
   TableDoesNotExistError(const string& what)
-    : invalid_argument(what) {}
+    : exception(what.c_str()) {}
 };
 
-class InvalidOperationError : public logic_error {
+class EXPORT InvalidOperationError : public exception {
 public:
   InvalidOperationError(const string& what)
-    : logic_error(what) {}
+    : exception(what.c_str()) {}
 };
 
-class KeyConflictError : public InvalidOperationError {
+class EXPORT KeyConflictError : public InvalidOperationError {
 public:
   KeyConflictError(const string& what)
     : InvalidOperationError(what) {}
 };
 
 /** Thrown when the specified value cannot be converted to the requested type. */
-class InvalidTypeError : public logic_error {
+class EXPORT InvalidTypeError : public exception {
 public:
   InvalidTypeError(const string& what)
-    : logic_error(what) {}
+    : exception(what.c_str()) {}
 };
 
-class QuerySyntaxError : public invalid_argument {
+class EXPORT QuerySyntaxError : public exception {
 public:
   QuerySyntaxError(const string& what)
-    : invalid_argument(what) {}
+    : exception(what.c_str()) {}
 };
 
-class IOError : public runtime_error {
+class EXPORT IOError : public exception {
 public:
   IOError(const string& what)
-    : runtime_error(what) {}
+    : exception(what.c_str()) {}
 };
 
 #endif  // EXCEPTION_H_

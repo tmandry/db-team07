@@ -13,7 +13,7 @@ using namespace std;
  * In the context of a table, fields are known as columns, but within a record
  * they are called fields.
  */
-class Record {
+class EXPORT Record {
 public:
   /**
    * A const iterator over the fields in a record.
