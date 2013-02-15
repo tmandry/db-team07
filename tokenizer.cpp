@@ -8,7 +8,7 @@ Tokenizer::Tokenizer(string source) {
 
 // This looks disgusting, if you have a creative way of splitting it up, go
 // for it.
-vector<Tokenizer::Token> Tokenizer::tokenize() {
+vector<Token> Tokenizer::tokenize() {
   while(stream_.size() > 0) {
     char c = stream_get();
     switch(c) {

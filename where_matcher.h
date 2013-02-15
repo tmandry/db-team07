@@ -13,7 +13,17 @@ public:
   WhereMatcher(string where_clause);
   bool does_match(Record record);
 private:
-  vector<Tokenizer::Token> tokens_;
+  vector<Token> tokens_;
+  Record record_;
+
+  template <typename T>
+  T parse_value();
+  bool parse_conditional();
+  bool parse_or();
+  bool parse_and();
+
+  Token stream_get();
+  void stream_unget(Token token);
 };
 
 #endif

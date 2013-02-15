@@ -6,38 +6,39 @@
 
 using namespace std;
 
+/** An enum specifying the type of the token */
+enum TokenType {
+  bool_or               = 0,
+  bool_and              = 1,
+
+  parenthesis_left      = 2,
+  parenthesis_right     = 3,
+
+  conditional_eq        = 4,
+  conditional_neq       = 5,
+  conditional_lt        = 6,
+  conditional_gt        = 7,
+  conditional_lte       = 8,
+  conditional_gte       = 9,
+
+  value_undefined_type  = 10,
+  value_integer         = 11,
+  value_floating        = 12,
+  value_varchar         = 13,
+  value_date            = 14,
+  value_time            = 15,
+
+  attribute_name        = 16
+};
+
+/**
+ * A token is used in parsing to split a string into easy to use blocks of logic
+ * associated with its purpose.
+ */
+typedef pair<TokenType, string> Token;
+
 class Tokenizer {
 public:
-  /** An enum specifying the type of the token */
-  enum TokenType {
-    bool_or               = 0,
-    bool_and              = 1,
-
-    parenthesis_left      = 2,
-    parenthesis_right     = 3,
-
-    conditional_eq        = 4,
-    conditional_neq       = 5,
-    conditional_lt        = 6,
-    conditional_gt        = 7,
-    conditional_lte       = 8,
-    conditional_gte       = 9,
-
-    value_undefined_type  = 10,
-    value_integer         = 11,
-    value_floating        = 12,
-    value_varchar         = 13,
-    value_date            = 14,
-    value_time            = 15,
-
-    attribute_name        = 16
-  };
-
-  /**
-   * A token is used in parsing to split a string into easy to use blocks of logic
-   * associated with its purpose.
-   */
-  typedef pair<TokenType, string> Token;
 
   /** Constructors takes the source string to be parsed */
   Tokenizer(string source);
