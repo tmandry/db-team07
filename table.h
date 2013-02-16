@@ -4,6 +4,8 @@
 #include <deque>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <utility>
 using namespace std;
 
 #include "exception.h"
@@ -206,7 +208,42 @@ public:
   T max(string column_name) const;
 
 private:
+  template <typename T>
+  static T from_string(string from);
+
   deque<Record> records_;
 };
+
+template<typename T>
+T Table::sum(string column_name) const {
+  T sum;
+  for (const Record& record : records_)
+    sum += from_string<T>(record.get(column_name));
+  return sum;
+}
+
+template<typename T>
+T Table::min(string column_name) const {
+  T min;
+  for (const Record& record : records_)
+    min = std::min(min, from_string<T>(record.get(column_name)));
+  return min;
+}
+
+template<typename T>
+T Table::max(string column_name) const {
+  T max;
+  for (const Record& record : records_)
+    max = std::max(max, from_string<T>(record.get(column_name)));
+  return max;
+}
+
+template<typename T>
+T Table::from_string(string from) {
+  ostringstream ss(from);
+  T val;
+  ss >> val;
+  return val;
+}
 
 #endif  // TABLE_H_
