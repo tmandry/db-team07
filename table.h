@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <utility>
+#include <limits>
 using namespace std;
 
 #include "exception.h"
@@ -217,7 +218,7 @@ private:
 
 template<typename T>
 T Table::sum(string column_name) const {
-  T sum;
+  T sum = 0;
   for (const Record& record : records_)
     sum += from_string<T>(record.get(column_name));
   return sum;
@@ -225,7 +226,7 @@ T Table::sum(string column_name) const {
 
 template<typename T>
 T Table::min(string column_name) const {
-  T min;
+  T min = numeric_limits<T>::min();
   for (const Record& record : records_)
     min = std::min(min, from_string<T>(record.get(column_name)));
   return min;
@@ -233,7 +234,7 @@ T Table::min(string column_name) const {
 
 template<typename T>
 T Table::max(string column_name) const {
-  T max;
+  T max = numeric_limits<T>::max();
   for (const Record& record : records_)
     max = std::max(max, from_string<T>(record.get(column_name)));
   return max;
