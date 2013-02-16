@@ -1,5 +1,6 @@
 #ifndef TABLE_H_
 #define TABLE_H_
+#pragma warning(disable: 4251)
 
 #include <deque>
 #include <string>
@@ -208,9 +209,6 @@ public:
   T max(string column_name) const;
 
 private:
-  template <typename T>
-  static T from_string(string from);
-
   deque<Record> records_;
   ColumnList columns_;
 };
@@ -219,7 +217,7 @@ template<typename T>
 T Table::sum(string column_name) const {
   T sum = 0;
   for (const Record& record : records_)
-    sum += from_string<T>(record.get(column_name));
+    sum += record.get<T>(column_name);
   return sum;
 }
 
@@ -227,7 +225,7 @@ template<typename T>
 T Table::min(string column_name) const {
   T min = numeric_limits<T>::min();
   for (const Record& record : records_)
-    min = std::min(min, from_string<T>(record.get(column_name)));
+    min = std::min(min, record.get<T>(column_name));
   return min;
 }
 
@@ -235,16 +233,8 @@ template<typename T>
 T Table::max(string column_name) const {
   T max = numeric_limits<T>::max();
   for (const Record& record : records_)
-    max = std::max(max, from_string<T>(record.get(column_name)));
+    max = std::max(max, record.get<T>(column_name));
   return max;
-}
-
-template<typename T>
-T Table::from_string(string from) {
-  ostringstream ss(from);
-  T val;
-  ss >> val;
-  return val;
 }
 
 #endif  // TABLE_H_

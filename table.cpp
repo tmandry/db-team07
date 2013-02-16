@@ -29,7 +29,7 @@ void Table::del_column(string column_name) {
 }
 
 void Table::rename_column(string from, string to) {
-	for(int i = 0; i < columns_.size(); i++) {
+	for (unsigned i = 0; i < columns_.size(); i++) {
 		if(columns_[i].first == from)
 			columns_[i].first = to;
 	}

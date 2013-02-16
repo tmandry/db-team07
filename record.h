@@ -1,5 +1,6 @@
 #ifndef _RECORD_H_
 #define _RECORD_H_
+#pragma warning(disable: 4251)
 
 #include <map>
 #include <string>
@@ -72,7 +73,7 @@ public:
    */
   template <typename T>
   T get(string field) const {
-    for(int i = 0; i < values_.size(); i++) {
+    for(unsigned i = 0; i < values_.size(); i++) {
       if(values_[i].first == field) {
         stringstream ss;
         ss << values_[i].second;
@@ -104,8 +105,8 @@ public:
    */
   template <typename T>
   void set(string field, T new_value) {
-    for(int i = 0; i < values_.size(); i++) {
-      if(values_[i].first = field) {
+    for(unsigned i = 0; i < values_.size(); i++) {
+      if(values_[i].first == field) {
         stringstream ss;
         ss << new_value;
 

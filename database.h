@@ -1,5 +1,6 @@
 #ifndef _DATABASE_H_
 #define _DATABASE_H_
+#pragma warning(disable: 4251)
 
 #include <string>
 #include <vector>
