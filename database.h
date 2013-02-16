@@ -17,6 +17,8 @@ public:
   /** Creates an empty database */
   Database();
 
+  virtual ~Database();
+
   /**
     Add a table to the database.
 
@@ -147,6 +149,10 @@ public:
     \returns a one-for-one copy / clone of this database
    */
   Database copy();
+
+private:
+  typedef map<string, Table*> TableMap;
+  TableMap tables_;
 };
 
 #endif
