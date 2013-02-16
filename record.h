@@ -69,7 +69,21 @@ public:
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  T get(string field);
+  T get(string field) {
+    for(int i = 0; i < values_.size(); i++) {
+      if(values_[i].first == field) {
+        stringstream ss;
+        ss << values_[i].second;
+
+        T value;
+        ss >> value;
+
+        return value;
+      }
+    }
+
+    throw ColumnDoesNotExistError(field);
+  }
 
   /**
     Set the value of a field by column name. The field is converted from the
@@ -87,7 +101,21 @@ public:
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  void set(string field, T value);
+  void set(string field, T new_value) {
+    for(int i = 0; i < values_.size(); i++) {
+      if(values_[i].first = field) {
+        stringstream ss;
+        ss << new_value;
+
+        string string_value;
+        ss >> string_value;
+
+        values_[i].second = string_value;
+      }
+    }
+
+    throw ColumnDoesNotExistError(field);
+  }
 
 private:
   vector<pair<string, string> > values_;

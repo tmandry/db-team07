@@ -21,37 +21,3 @@ Record::RecordIterator Record::begin() const {
 Record::RecordIterator Record::end() const {
   return values_.end();
 }
-
-template <typename T>
-T Record::get(string field) {
-	for(int i = 0; i < values_.size(); i++) {
-    if(values_[i].first = field) {
-      stringstream ss;
-      ss << values_[i].second;
-
-      T value;
-      ss >> value;
-
-      return value;
-    }
-	}
-
-  throw ColumnDoesNotExistError(field);
-}
-
-template <typename T>
-void Record::set(string field, T new_value) {
-  for(int i = 0; i < values_.size(); i++) {
-    if(values_[i].first = field) {
-      stringstream ss;
-      ss << new_value;
-
-      string string_value;
-      ss >> string_value;
-
-      values_[i].second = string_value;
-    }
-  }
-
-  throw ColumnDoesNotExistError(field);
-}
