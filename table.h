@@ -211,6 +211,7 @@ public:
 private:
   deque<Record> records_;
   ColumnList columns_;
+  vector<string> key_;
 };
 
 template<typename T>

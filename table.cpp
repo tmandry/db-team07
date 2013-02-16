@@ -12,6 +12,9 @@ Table::Table(const ColumnList& columns) {
 }
 
 Table::~Table() {
+	delete &columns_;
+	delete &records_;
+	delete &key_;
 }
 
 void Table::add_column(string column_name, RecordType type) {
@@ -22,8 +25,8 @@ void Table::del_column(string column_name) {
 	for(ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
 		if(it->first == column_name) {
 			columns_.erase(it);
-      return;
-    }
+      		return;
+   		}
 	}
 	throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
@@ -38,7 +41,7 @@ void Table::rename_column(string from, string to) {
 
 Table::ColumnList Table::columns() const {
   return columns_;
-}
+}	
 
 unsigned int Table::index_for(string column_name) const {
   for (unsigned int i = 0; i < columns_.size(); ++i)
@@ -48,15 +51,29 @@ unsigned int Table::index_for(string column_name) const {
 }
 
 void Table::set_key(vector<string> column_names) {
+	// needs to check for duplicates within row
+	// done in insert function?
+	key_ = column_names; 
+}
 
+vector<string> Table::key() const {
+	return key_;
 }
 
 int Table::size() const {
   return records_.size();
 }
 
+// likely there is better way of doing this
 void Table::insert(const Record& record) {
-  records_.push_back(record);
+	for(int i = 0; i < records_.size(); i++) {
+		for(int j = 0; j < records_[i].size(); j++) {
+			if(records_[i][j].first == record.first) {
+				throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
+			}
+		}
+	}
+	records_.push_back(record);
 }
 
 Table::TableIterator Table::begin() const {
@@ -78,6 +95,7 @@ const Record& Table::last() const {
 const Record& Table::at(unsigned int i) const {
   return records_.at(i);
   // TODO catch/rethrow exception
+  throw InvalidOperationError("Index out of Range");
 }
 
 Table Table::cross_join(const Table& other) const {
