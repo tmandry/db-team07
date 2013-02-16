@@ -71,7 +71,7 @@ public:
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  T get(string field) {
+  T get(string field) const {
     for(int i = 0; i < values_.size(); i++) {
       if(values_[i].first == field) {
         stringstream ss;

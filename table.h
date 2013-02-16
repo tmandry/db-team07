@@ -10,8 +10,7 @@
 using namespace std;
 
 #include "exception.h"
-
-class Record;
+#include "record.h"
 
 /**
  * A table.
