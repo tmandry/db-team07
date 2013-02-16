@@ -41,24 +41,25 @@ void Table::insert(const Record& record) {
 
 
 TableIterator Table::begin() const {
-
+  return records_.begin();
 }
 
 TableIterator Table::end() const {
-
+  return records_.end();
 }
 
 
 const Record& Table::first() const {
-
+  return records_.first();
 }
 
 const Record& Table::last() const {
-
+  return records_.last();
 }
 
 const Record& Table::at(unsigned int i) const {
-
+  return records_.at(i);
+  // TODO catch/rethrow exception
 }
 
 
@@ -72,6 +73,11 @@ Table Table::natural_join(const Table& other) const {
 }
 
 int Table::count(string column_name) const {
-
+  int ret = 0;
+  for (const Record& record : records_) {
+    if (record.get(column_name) != "NULL")
+      ++ret;
+  }
+  return ret;
 }
 
