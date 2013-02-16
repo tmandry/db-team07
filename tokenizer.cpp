@@ -29,8 +29,7 @@ vector<Token> Tokenizer::tokenize() {
           tokens_.push_back( Token(bool_or, "||") );
         } else {
           stream_unget(c);
-          // TODO: create exception class
-          // throw e;
+          throw QuerySyntaxError("Invalid syntax in: " + stream_);
         }
         break;
 
@@ -41,8 +40,7 @@ vector<Token> Tokenizer::tokenize() {
           tokens_.push_back( Token(bool_and, "&&") );
         } else {
           stream_unget(c);
-          // TODO: create exception class
-          // throw e;
+          throw QuerySyntaxError("Invalid syntax: " + stream_);
         }
         break;
 
@@ -75,8 +73,7 @@ vector<Token> Tokenizer::tokenize() {
           tokens_.push_back( Token(conditional_neq, "!=") );
         } else {
           stream_unget(c);
-          // TODO: create exception class
-          // throw e;
+          throw QuerySyntaxError("Invalid syntax in: " + stream_);
         }
         break;
 
@@ -92,28 +89,27 @@ vector<Token> Tokenizer::tokenize() {
         //   if single quote: varchar
         //   if numeral: float, date, time, or int
         //   else: attribute name
-        if (c == 30) {
-          string string_value(1, c);
+        if (c == 39) {
+          string value;
 
           while (true) {
-            c = stream_get();
-            if (c != 30) {
-              string_value.push_back(c);
-            } else {
-              stream_unget(c);
+            c = stream_get(false);
+
+            // if space or single quote, we are done
+            if (c == 30 || c == 39) {
               break;
             }
+
+            value.push_back(c);
           }
 
-          tokens_.push_back( Token(value_varchar, string_value) );
+          tokens_.push_back( Token(value_varchar, value) );
         } else if (c >= 48 && c <= 57) {
-          stringstream ss;
-          ss << c;
+          string value(1, c);
 
-          while (true) {
-            c = stream_get();
+          while (c = stream_get(false)) {
             if (c >= 48 && c <= 57 || c == 46 || c == 47 || c == 58) {
-              ss << c;
+              value.push_back(c);
             } else {
               stream_unget(c);
               break;
@@ -121,23 +117,23 @@ vector<Token> Tokenizer::tokenize() {
           }
 
           // discern between floats, dates, times, and ints
-          if (string_contains(ss.str(), 46)) {
-            tokens_.push_back( Token(value_floating, ss.str()) );
-          } else if (string_contains(ss.str(), 47)) {
-            tokens_.push_back( Token(value_date, ss.str()) );
-          } else if (string_contains(ss.str(), 58)) {
-            tokens_.push_back( Token(value_time, ss.str()) );
+          if (string_contains(value, 46)) {
+            tokens_.push_back( Token(value_floating, value) );
+          } else if (string_contains(value, 47)) {
+            tokens_.push_back( Token(value_date, value) );
+          } else if (string_contains(value, 58)) {
+            tokens_.push_back( Token(value_time, value) );
           } else {
-            tokens_.push_back( Token(value_integer, ss.str()) );
+            tokens_.push_back( Token(value_integer, value) );
           }
         } else {
-          string attibute(1,c);
+          string attribute(1,c);
           while (true) {
-            c = stream_get();
+            c = stream_get(false);
             if (c != 32) {
-              attibute.push_back(c);
+              attribute.push_back(c);
             } else {
-              stream_unget(c);
+              tokens_.push_back( Token(attribute_name, attribute) );
               break;
             }
           }
@@ -149,11 +145,22 @@ vector<Token> Tokenizer::tokenize() {
   return tokens_;
 }
 
-char Tokenizer::stream_get() {
+char Tokenizer::stream_get(bool skip_space) {
+  // return NULL character if end of stream was reached
+  if (stream_.size() == 0) {
+    return 0;
+  }
+
+  char c;
   // find the next, nonspace character
-  char c = 32;
-  while(c != 32) {
-    c = *stream_.end();
+  if (skip_space) {
+    c = 32;
+    while(c == 32) {
+      c = stream_[stream_.size() - 1];
+      stream_.pop_back();
+    }
+  } else {
+    c = stream_[stream_.size() - 1];
     stream_.pop_back();
   }
 

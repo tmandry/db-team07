@@ -4,12 +4,13 @@
 
 WhereMatcher::WhereMatcher(string where_clause) {
   Tokenizer tokenizer(where_clause);
-  tokens_ = tokenizer.tokenize();
-  tokens_ = vector<Token>(tokens_.rbegin(), tokens_.rend());
+  query_ = tokenizer.tokenize();
+  query_ = vector<Token>(query_.rbegin(), query_.rend());
 }
 
 bool WhereMatcher::does_match(Record record) {
   record_ = record;
+  tokens_ = query_;
   return parse_and();
 }
 
@@ -40,7 +41,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() == parse_value<string>();
+          return parse_value<string>().compare(parse_value<string>()) == 0;
       }
     case conditional_neq:
       switch(value_type) {
@@ -51,7 +52,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() != parse_value<string>();
+          return parse_value<string>().compare(parse_value<string>()) != 0;
       }
     case conditional_lt:
       switch(value_type) {
@@ -62,7 +63,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() < parse_value<string>();
+          return parse_value<string>().compare(parse_value<string>()) > 0;
       }
     case conditional_gt:
       switch(value_type) {
@@ -73,7 +74,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() > parse_value<string>();
+		      return parse_value<string>().compare(parse_value<string>()) < 0;
       }
       break;
     case conditional_lte:
@@ -85,7 +86,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() <= parse_value<string>();
+          return parse_value<string>().compare(parse_value<string>()) >= 0;
       }
       break;
     case conditional_gte:
@@ -97,7 +98,7 @@ bool WhereMatcher::parse_conditional() {
         case value_varchar:
         case value_date:
         case value_time:
-          return parse_value<string>() >= parse_value<string>();
+          return parse_value<string>().compare(parse_value<string>()) <= 0;
       }
       break;
     default:
@@ -112,7 +113,9 @@ bool WhereMatcher::parse_or() {
   if(t.first == bool_or) {
     return left || parse_conditional();
   } else {
-    stream_unget(t);
+    if(t.first != value_undefined_type) {
+      stream_unget(t);
+    }
     return left;
   }
 }
@@ -124,16 +127,23 @@ bool WhereMatcher::parse_and() {
   if(t.first == bool_and) {
     return left && parse_or();
   } else {
-    stream_unget(t);
+    if(t.first != value_undefined_type) {
+      stream_unget(t);
+    }
     return left;
   }
 }
 
 Token WhereMatcher::stream_get() {
-  Token token = *tokens_.end();
-  tokens_.pop_back();
-
-  return token;
+  if (tokens_.size() > 0) {
+    vector<Token>::iterator it = tokens_.end();
+    it--;
+    Token token = *it;
+    tokens_.pop_back();
+    return token;
+  } else {
+    return Token(value_undefined_type, "");
+  }
 }
 
 void WhereMatcher::stream_unget(Token token) {

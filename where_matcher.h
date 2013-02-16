@@ -1,19 +1,21 @@
 #ifndef WHEREMATCHER_H_
 #define WHEREMATCHER_H_
 
-#include "Record.h"
-#include "Tokenizer.h"
+#include "exception.h"
+#include "record.h"
+#include "tokenizer.h"
 
 #include <vector>
 #include <string>
 using namespace std;
 
-class WhereMatcher {
+class EXPORT WhereMatcher {
 public:
   WhereMatcher(string where_clause);
   bool does_match(Record record);
 private:
   vector<Token> tokens_;
+  vector<Token> query_;
   Record record_;
 
   bool parse_conditional();
@@ -26,7 +28,8 @@ private:
     Token t = stream_get();
 
     if(t.first == attribute_name) {
-      return record_.get<T>(t.second);
+      T record_value = record_.get<T>(t.second);
+	  return record_value;
     } else {
       stringstream ss;
       ss << t.second;

@@ -1,6 +1,8 @@
 #ifndef TOKENIZER_H_
 #define TOKENIZER_H_
 
+#include "exception.h"
+
 #include <string>
 #include <vector>
 
@@ -46,7 +48,7 @@ public:
   /** Returns a vector of tokens parsed from a where clause */
   vector<Token> tokenize();
 private:
-  char stream_get();
+  char stream_get(bool include_space = true);
   void stream_unget(char c);
   static bool string_contains(string source, char target);
 
