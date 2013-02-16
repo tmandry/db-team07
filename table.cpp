@@ -1,94 +1,77 @@
 #include "table.h"
 
-void add_column(string column_name, RecordType type) { 
 
-};
+void Table::add_column(string column_name, RecordType type) {
 
-
-void del_column(string column_name) {
-
-};
+}
 
 
-void rename_column(string from, string to) {
+void Table::del_column(string column_name) {
 
-};
-
-
-ColumnList columns() const {
-
-};
-
-unsigned int index_for(string column_name) const {
-
-};
+}
 
 
-void set_key(vector<string> column_names) {
+void Table::rename_column(string from, string to) {
 
-};
-
-
-int size() const {
-
-};
+}
 
 
-void insert(const Record& record) {
+ColumnList Table::columns() const {
 
-};
+}
 
+unsigned int Table::index_for(string column_name) const {
 
-TableIterator begin() const {
-
-};
-
-TableIterator end() const {
-
-};
+}
 
 
-const Record& first() const {
+void Table::set_key(vector<string> column_names) {
 
-};
-
-const Record& last() const {
-
-};
-
-const Record& at(unsigned int i) const {
-
-};
+}
 
 
-Table cross_join(const Table& other) const {
+int Table::size() const {
 
-};
-
-
-Table natural_join(const Table& other) const {
-
-};
+}
 
 
-int count(string column_name) const {
+void Table::insert(const Record& record) {
 
-};
-
-
-template<typename T>
-T sum(string column_name) const {
-
-};
+}
 
 
-template<typename T>
-T min(string column_name) const {
+TableIterator Table::begin() const {
 
-};
+}
+
+TableIterator Table::end() const {
+
+}
 
 
-template<typename T>
-T max(string column_name) const {
-  
-};
+const Record& Table::first() const {
+
+}
+
+const Record& Table::last() const {
+
+}
+
+const Record& Table::at(unsigned int i) const {
+
+}
+
+
+Table Table::cross_join(const Table& other) const {
+
+}
+
+
+Table Table::natural_join(const Table& other) const {
+
+}
+
+int Table::count(string column_name) const {
+
+}
+
