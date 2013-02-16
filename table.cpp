@@ -1,8 +1,9 @@
 #include "table.h"
+#include "exception.h"
 
 Table::Table() {
 	records_ = deque<Record> ();
-	columns_ = vector<ColumnList> ();
+	columns_ = ColumnList ();
 };
 
 Table::Table(const ColumnList& columns) {
@@ -11,23 +12,32 @@ Table::Table(const ColumnList& columns) {
 
 Table::~Table() {
 	delete columns_;
+	delete records_;
 };
 
-void add_column(string column_name, RecordType type) {
-	records_.pushback();
+
+void Table::add_column(string column_name, RecordType type) { 
+	columns_.push_back(make_pair(column_name, type));
 };
 
-void Table::add_column(string column_name, RecordType type) {
-
-}
-
+// ?
 void Table::del_column(string column_name) {
-
+	for(int i = 0; i < columns_.size() - 1; i++) {
+		if(columns_[i].first == column_name)
+			delete column_[i];
+		// else 
+		// 	throw TableDoesNotExistError();
+	}
 }
 
 void Table::rename_column(string from, string to) {
-
-}
+	for(int i = 0; i < columns_.size() - 1; i++) {
+		if(columns_[i].first == from)
+			column_[i].first = to;
+		// else
+		// 	throw TableDoesNotExistError();
+	}
+}	
 
 ColumnList Table::columns() const {
 

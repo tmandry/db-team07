@@ -1,58 +1,58 @@
 #include "database.h"
 
-void add_table(string name, Table* table) {
+void Database::add_table(string name, Table* table) {
 	
 };
 
 
-void drop_table(string name) {
+void Database::drop_table(string name) {
 
 };
 
-vector<string> table_names() {
-
-};
-
-
-Table* table(string table_name) {
+vector<string> Database::table_names() {
 
 };
 
 
-Table* table_if_exists(string table_name) {
+Table* Database::table(string table_name) {
 
 };
 
 
-Table* query(string select, string from, string where) {
+Table* Database::table_if_exists(string table_name) {
 
 };
 
 
-void delete_from(string from, string where) {
+Table* Database::query(string select, string from, string where) {
 
 };
 
 
-void update(string table, string where, string set) {
-
-};
-
-void save(string filename) {
+void Database::delete_from(string from, string where) {
 
 };
 
 
-void load(string filename) {
+void Database::update(string table, string where, string set) {
+
+};
+
+void Database::save(string filename) {
 
 };
 
 
-void merge(const Database& database) {
+void Database::load(string filename) {
 
 };
 
 
-Database copy() {
+void Database::merge(const Database& database) {
+
+};
+
+
+Database Database::copy() {
 
 };
