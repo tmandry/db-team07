@@ -7,3 +7,5 @@ latex/
 *.sublime-project
 *.sublime-workspace
 *.gch
+*.sdf
+*.opensdf
