@@ -66,14 +66,17 @@ int Table::size() const {
 
 // likely there is better way of doing this
 void Table::insert(const Record& record) {
-	for(int i = 0; i < records_.size(); i++) {
-		for(int j = 0; j < records_[i].size(); j++) {
-			if(records_[i][j].first == record.first) {
-				throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
+	if(!key().empty()) { // suspect logic
+		for(int i = 0; i < records_.size(); i++) {
+			for(int j = 0; j < key_.size(); j++) {
+				if(records_[i].get<string>(key_[j]) == record.get<string>(key_[j])) {
+					throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
+				}
 			}
 		}
 	}
-	records_.push_back(record);
+	else
+		records_.push_back(record);
 }
 
 Table::TableIterator Table::begin() const {
