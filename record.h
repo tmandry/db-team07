@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <sstream>
+
 using namespace std;
 
 #include "exception.h"
