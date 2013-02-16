@@ -21,7 +21,6 @@ T WhereMatcher::parse_value() {
   if(t.first == attribute_name) {
     return record_.get<T>(t.second);
   } else {
-    // will not handle dates or times currently
     stringstream ss;
     ss << t.second;
 
@@ -46,8 +45,6 @@ bool WhereMatcher::parse_conditional() {
 
   stream_unget(left_token);
 
-  void* left;
-
   // In C++ you can't declare variables of the same name, even if they were
   // never actually declared, this is a really ugly fix, but if there is a way
   // to emulate some sort of dynamic typing C++, we could make this a lot better
@@ -59,12 +56,9 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() == parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() == parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() == parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() == parse_value<time>();
       }
     case conditional_neq:
       switch(value_type) {
@@ -73,12 +67,9 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() != parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() != parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() != parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() != parse_value<time>();
       }
     case conditional_lt:
       switch(value_type) {
@@ -87,12 +78,9 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() < parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() < parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() < parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() < parse_value<time>();
       }
     case conditional_gt:
       switch(value_type) {
@@ -101,12 +89,9 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() > parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() > parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() > parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() > parse_value<time>();
       }
       break;
     case conditional_lte:
@@ -116,12 +101,9 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() <= parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() <= parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() <= parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() <= parse_value<time>();
       }
       break;
     case conditional_gte:
@@ -131,17 +113,13 @@ bool WhereMatcher::parse_conditional() {
         case value_floating:
           return parse_value<float>() >= parse_value<float>();
         case value_varchar:
+        case value_date:
+        case value_time:
           return parse_value<string>() >= parse_value<string>();
-        // not worrying about dates or times yet
-        // case value_date:
-        //   return parse_value<date>() >= parse_value<date>();
-        // case value_time:
-        //   return parse_value<time>() >= parse_value<time>();
       }
       break;
     default:
-      stream_unget(left_token);
-      // error
+      throw QuerySyntaxError("Unrecognized symbol: " + left_token.second);
   }
 }
 
