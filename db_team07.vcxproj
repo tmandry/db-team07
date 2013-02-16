@@ -20,12 +20,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -75,8 +77,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="database.h" />
+    <ClInclude Include="exception.h" />
     <ClInclude Include="record.h" />
     <ClInclude Include="table.h" />
+    <ClInclude Include="tokenizer.h" />
+    <ClInclude Include="where_matcher.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="database.cpp" />
+    <ClCompile Include="record.cpp" />
+    <ClCompile Include="table.cpp" />
+    <ClCompile Include="tokenizer.cpp" />
+    <ClCompile Include="where_matcher.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

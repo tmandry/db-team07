@@ -2,6 +2,7 @@ bin/
 obj/
 doc/
 latex/
+Debug/
 *.user
 *.suo
 *.sublime-project

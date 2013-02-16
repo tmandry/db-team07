@@ -36,10 +36,7 @@ T Record::get(string field) {
     }
 	}
 
-  T test;
-  // if not found, throw exception
-  // throw new ColumnDoesNotExistError(field);
-  return test;
+  throw ColumnDoesNotExistError(field);
 }
 
 template <typename T>
@@ -56,6 +53,5 @@ void Record::set(string field, T new_value) {
     }
   }
 
-  // if not found, throw exception
-  // throw new ColumnDoesNotExistError(field);
+  throw ColumnDoesNotExistError(field);
 }
