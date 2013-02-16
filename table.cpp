@@ -15,28 +15,24 @@ Table::~Table() {
 	delete records_;
 };
 
-
 void Table::add_column(string column_name, RecordType type) { 
 	columns_.push_back(make_pair(column_name, type));
 };
 
-// ?
 void Table::del_column(string column_name) {
-	for(int i = 0; i < columns_.size() - 1; i++) {
+	for(int i = 0; i < columns_.size(); i++) {
 		if(columns_[i].first == column_name)
 			delete column_[i];
-		// else 
-		// 	throw TableDoesNotExistError();
 	}
+	throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
 
 void Table::rename_column(string from, string to) {
-	for(int i = 0; i < columns_.size() - 1; i++) {
+	for(int i = 0; i < columns_.size(); i++) {
 		if(columns_[i].first == from)
 			column_[i].first = to;
-		// else
-		// 	throw TableDoesNotExistError();
 	}
+	throw ColumnDoesNotExistError("Could not find column " + from);
 }	
 
 ColumnList Table::columns() const {
@@ -55,7 +51,7 @@ void Table::set_key(vector<string> column_names) {
 }
 
 int Table::size() const {
-  retunr records_.size();
+  return records_.size();
 }
 
 void Table::insert(const Record& record) {
