@@ -4,7 +4,8 @@
 
 WhereMatcher::WhereMatcher(string where_clause) {
   Tokenizer tokenizer(where_clause);
-  tokens_ = tokenizer.tokenize().reverse();
+  tokens_ = tokenizer.tokenize();
+  tokens_ = vector<Token>(tokens_.rbegin(), tokens_.rend());
 }
 
 bool WhereMatcher::does_match(Record record) {
@@ -12,6 +13,7 @@ bool WhereMatcher::does_match(Record record) {
   return parse_and();
 }
 
+// TODO: Handle parenthesis
 template <typename T>
 T WhereMatcher::parse_value() {
   Token t = stream_get();
@@ -44,46 +46,101 @@ bool WhereMatcher::parse_conditional() {
 
   stream_unget(left_token);
 
-  // apparently you can't declare variables of the same name, even if they were
-  // never actually declared, need to figure something out
-  switch(value_type) {
-    case value_integer:
-      int left = parse_value<int>();
-      int right = parse_value<int>();
-      break;
-    case value_floating:
-      float left = parse_value<float>();
-      float right = parse_value<float>();
-      break;
-    case value_varchar:
-      string left = parse_value<string>();
-      string right = parse_value<string>();
-      break;
-    // not worrying about dates or times yet
-    // case value_date:
-    //   date left = <date>value();
-    //   date right = <date>value();
-    //   break;
-    // case value_time:
-    //   time left = <time>value();
-    //   time right = <time>value();
-  }
+  void* left;
 
+  // In C++ you can't declare variables of the same name, even if they were
+  // never actually declared, this is a really ugly fix, but if there is a way
+  // to emulate some sort of dynamic typing C++, we could make this a lot better
   switch(op_token.first) {
     case conditional_eq:
-      return left == right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() == parse_value<int>();
+        case value_floating:
+          return parse_value<float>() == parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() == parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() == parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() == parse_value<time>();
+      }
     case conditional_neq:
-      return left != right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() != parse_value<int>();
+        case value_floating:
+          return parse_value<float>() != parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() != parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() != parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() != parse_value<time>();
+      }
     case conditional_lt:
-      return left < right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() < parse_value<int>();
+        case value_floating:
+          return parse_value<float>() < parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() < parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() < parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() < parse_value<time>();
+      }
     case conditional_gt:
-      return left > right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() > parse_value<int>();
+        case value_floating:
+          return parse_value<float>() > parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() > parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() > parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() > parse_value<time>();
+      }
+      break;
     case conditional_lte:
-      return left <= right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() <= parse_value<int>();
+        case value_floating:
+          return parse_value<float>() <= parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() <= parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() <= parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() <= parse_value<time>();
+      }
+      break;
     case conditional_gte:
-      return left >= right;
+      switch(value_type) {
+        case value_integer:
+          return parse_value<int>() >= parse_value<int>();
+        case value_floating:
+          return parse_value<float>() >= parse_value<float>();
+        case value_varchar:
+          return parse_value<string>() >= parse_value<string>();
+        // not worrying about dates or times yet
+        // case value_date:
+        //   return parse_value<date>() >= parse_value<date>();
+        // case value_time:
+        //   return parse_value<time>() >= parse_value<time>();
+      }
+      break;
     default:
-      stream_unget(t);
+      stream_unget(left_token);
       // error
   }
 }
