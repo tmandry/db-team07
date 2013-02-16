@@ -212,6 +212,7 @@ private:
   static T from_string(string from);
 
   deque<Record> records_;
+  vector<ColumnList> columns_;
 };
 
 template<typename T>

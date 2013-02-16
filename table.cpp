@@ -1,5 +1,21 @@
 #include "table.h"
 
+Table::Table() {
+	records_ = deque<Record> ();
+	columns_ = vector<ColumnList> ();
+};
+
+Table::Table(const ColumnList& columns) {
+	columns_ = columns;
+};
+
+Table::~Table() {
+	delete columns_;
+};
+
+void add_column(string column_name, RecordType type) { 
+	records_.pushback();
+};
 
 void Table::add_column(string column_name, RecordType type) {
 
