@@ -13,7 +13,7 @@ Table::~Table() {
 	delete columns_;
 };
 
-void add_column(string column_name, RecordType type) { 
+void add_column(string column_name, RecordType type) {
 	records_.pushback();
 };
 
@@ -34,7 +34,10 @@ ColumnList Table::columns() const {
 }
 
 unsigned int Table::index_for(string column_name) const {
-
+  for (unsigned int i = 0; i < columns_.size(); ++i)
+    if (columns_[i] == column_name)
+      return i;
+  throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
 
 void Table::set_key(vector<string> column_names) {
@@ -42,11 +45,11 @@ void Table::set_key(vector<string> column_names) {
 }
 
 int Table::size() const {
-
+  retunr records_.size();
 }
 
 void Table::insert(const Record& record) {
-
+  records_.push_back(record);
 }
 
 TableIterator Table::begin() const {
@@ -71,7 +74,18 @@ const Record& Table::at(unsigned int i) const {
 }
 
 Table Table::cross_join(const Table& other) const {
+  ColumnList join_columns(columns_);
+  join_columns.insert(join_columns.end(), other.columns_.begin(), other.columns_.end());
+  Table join(join_columns);
 
+  for (const Record& record1 : records_) {
+    for (const Record& record2 : other.records_) {
+      Record join_record(record1);
+      join_record.join(other);
+      join.insert(join_record);
+    }
+  }
+  return join;
 }
 
 Table Table::natural_join(const Table& other) const {

@@ -119,6 +119,10 @@ public:
     throw ColumnDoesNotExistError(field);
   }
 
+protected:
+  friend class Table;
+  void join(const Record& other);
+
 private:
   vector<pair<string, string> > values_;
 };

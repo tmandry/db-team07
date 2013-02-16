@@ -21,3 +21,7 @@ Record::RecordIterator Record::begin() const {
 Record::RecordIterator Record::end() const {
   return values_.end();
 }
+
+void Record::join(const Record& other) {
+  values_.insert(values_.end(), other.values_.begin(), other.values_.end());
+}
