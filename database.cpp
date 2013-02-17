@@ -45,14 +45,14 @@ Table* Database::table_if_exists(string table_name) {
 }
 
 Table* Database::query(string select, string from, string where) {
-  return 0;
+  return new Table;
 }
 
 void Database::delete_from(string from, string where) {
 	TableMap:: iterator it = tables_.find(from);
 	if(it == tables_.end())
-			throw TableDoesNotExistError("Table" + from + " could not be found")
-	WhereMatcher(where);
+			throw TableDoesNotExistError("Table" + from + " could not be found");
+	//WhereMatcher(where);
 }
 
 void Database::update(string table, string where, string set) {

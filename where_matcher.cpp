@@ -105,6 +105,7 @@ bool WhereMatcher::parse_conditional() {
     default:
       throw QuerySyntaxError("Unrecognized symbol: " + left_token.second);
   }
+  throw QuerySyntaxError("Unknown type, internal error");
 }
 
 bool WhereMatcher::parse_or() {

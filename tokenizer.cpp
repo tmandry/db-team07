@@ -171,7 +171,7 @@ void Tokenizer::stream_unget(char c) {
 
 /** Searches through a string for a specific character */
 bool Tokenizer::string_contains(string source, char target) {
-  for(int i = 0; i < source.size(); i++) {
+  for(unsigned i = 0; i < source.size(); i++) {
     if (source[i] == target) {
       return true;
     }
