@@ -105,19 +105,20 @@ public:
    */
   template <typename T>
   void set(string field, T new_value) {
+    stringstream ss;
+    ss << new_value;
+    string string_value;
+    ss >> string_value;
+
     for(unsigned i = 0; i < values_.size(); i++) {
       if(values_[i].first == field) {
-        stringstream ss;
-        ss << new_value;
-
-        string string_value;
-        ss >> string_value;
-
         values_[i].second = string_value;
+        return;
       }
     }
 
-    throw ColumnDoesNotExistError(field);
+    // add to end
+    values_.push_back(make_pair(field, string_value));
   }
 
 protected:

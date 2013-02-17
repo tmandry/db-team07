@@ -62,6 +62,16 @@ int Table::size() const {
 }
 
 void Table::insert(const Record& record) {
+  // Check column names and order
+  if (record.values_.size() != columns_.size()) {
+    throw ColumnDoesNotExistError("Number of columns in record does not match number of columns in table");
+  }
+  for (unsigned i = 0; i < record.values_.size(); ++i) {
+    if (record.values_[i].first != columns_[i].first) {
+      throw ColumnDoesNotExistError("Column "+record.values_[i].first+" in record does not match column in table ("+columns_[i].first+")");
+    }
+  }
+
   // If there is a key, check for conflicts
 	if(!key().empty()) {
 		for(unsigned i = 0; i < records_.size(); i++) {
