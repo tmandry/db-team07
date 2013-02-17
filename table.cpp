@@ -12,9 +12,6 @@ Table::Table(const ColumnList& columns) {
 }
 
 Table::~Table() {
-	delete &columns_;
-	delete &records_;
-	delete &key_;
 }
 
 void Table::add_column(string column_name, RecordType type) {
@@ -70,7 +67,7 @@ void Table::insert(const Record& record) {
 		for(int i = 0; i < records_.size(); i++) {
 			for(int j = 0; j < key_.size(); j++) {
 				if(records_[i].get<string>(key_[j]) == record.get<string>(key_[j])) {
-					throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
+					//throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
 				}
 			}
 		}

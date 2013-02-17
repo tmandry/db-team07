@@ -11,7 +11,6 @@ Record::Record(vector<pair<string, string> > entries) {
 }
 
 Record::~Record() {
-  delete &values_;
 }
 
 Record::RecordIterator Record::begin() const {
