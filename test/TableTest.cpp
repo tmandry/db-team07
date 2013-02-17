@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(columns_check_from_add)
 	Table t;
 	t.add_column("test", Table::date);
 	Table::ColumnList c;
-	c.push_back(make_pair("test", Table::integer));
+	c.push_back(make_pair("test", Table::date));
 	BOOST_CHECK(t.columns() == c);	
 }
 
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(insert_all_nulls)
 	names.push_back("ID");
 	t.set_key(names);
 	Record r1;
-	BOOST_CHECK(t.size() == 1);
+	BOOST_CHECK(t.size() == 0);
 	BOOST_CHECK(t.count("ID") == 0);
 	BOOST_CHECK(t.count("aaaa") == 0);
 	BOOST_CHECK(t.count("bbbb") == 0);
