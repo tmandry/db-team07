@@ -38,7 +38,7 @@ void Table::rename_column(string from, string to) {
 
 Table::ColumnList Table::columns() const {
   return columns_;
-}	
+}
 
 unsigned int Table::index_for(string column_name) const {
   for (unsigned int i = 0; i < columns_.size(); ++i)
@@ -50,7 +50,7 @@ unsigned int Table::index_for(string column_name) const {
 void Table::set_key(vector<string> column_names) {
 	// needs to check for duplicates within row
 	// done in insert function?
-	key_ = column_names; 
+	key_ = column_names;
 }
 
 vector<string> Table::key() const {
@@ -61,19 +61,25 @@ int Table::size() const {
   return records_.size();
 }
 
-// likely there is better way of doing this
 void Table::insert(const Record& record) {
-	if(!key().empty()) { // suspect logic
+  // If there is a key, check for conflicts
+	if(!key().empty()) {
 		for(unsigned i = 0; i < records_.size(); i++) {
+      bool unequal = false;
 			for(unsigned j = 0; j < key_.size(); j++) {
-				if(records_[i].get<string>(key_[j]) == record.get<string>(key_[j])) {
-					//throw KeyConflictError("Key Conflict: Already a record with column name" + record.first);
+				if(records_[i].get<string>(key_[j]) != record.get<string>(key_[j])) {
+          unequal = true;
+          break;
 				}
 			}
+
+      if (!unequal) {
+        throw KeyConflictError("Already a record with this key");
+      }
 		}
 	}
-	else
-		records_.push_back(record);
+
+	records_.push_back(record);
 }
 
 Table::TableIterator Table::begin() const {
