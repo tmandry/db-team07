@@ -24,13 +24,12 @@ enum TokenType {
   conditional_gte       = 9,
 
   value_undefined_type  = 10,
-  value_integer         = 11,
-  value_floating        = 12,
-  value_varchar         = 13,
-  value_date            = 14,
-  value_time            = 15,
+  value_numeral         = 11,
+  value_varchar         = 12,
+  value_date            = 13,
+  value_time            = 14,
 
-  attribute_name        = 16
+  attribute_name        = 15
 };
 
 /**

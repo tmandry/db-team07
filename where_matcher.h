@@ -28,8 +28,7 @@ private:
     Token t = stream_get();
 
     if(t.first == attribute_name) {
-      T record_value = record_.get<T>(t.second);
-	  return record_value;
+      return record_.get<T>(t.second);
     } else {
       stringstream ss;
       ss << t.second;

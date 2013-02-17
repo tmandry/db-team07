@@ -117,20 +117,18 @@ vector<Token> Tokenizer::tokenize() {
           }
 
           // discern between floats, dates, times, and ints
-          if (string_contains(value, 46)) {
-            tokens_.push_back( Token(value_floating, value) );
-          } else if (string_contains(value, 47)) {
+          if (string_contains(value, 47)) {
             tokens_.push_back( Token(value_date, value) );
           } else if (string_contains(value, 58)) {
             tokens_.push_back( Token(value_time, value) );
           } else {
-            tokens_.push_back( Token(value_integer, value) );
+            tokens_.push_back( Token(value_numeral, value) );
           }
         } else {
           string attribute(1,c);
           while (true) {
             c = stream_get(false);
-            if (c != 32) {
+            if (c != 32 && c != ')') {
               attribute.push_back(c);
             } else {
               tokens_.push_back( Token(attribute_name, attribute) );

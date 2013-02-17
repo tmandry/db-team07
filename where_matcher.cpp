@@ -16,6 +16,19 @@ bool WhereMatcher::does_match(Record record) {
 
 bool WhereMatcher::parse_conditional() {
   Token left_token = stream_get();
+
+  // handling of parenthesis
+  if(left_token.first == parenthesis_left) {
+    bool result = parse_and();
+    Token close_parenthesis = stream_get();
+
+    if(close_parenthesis.first != parenthesis_right) {
+      throw QuerySyntaxError("Invalid syntax, missing closing parenthesis.");
+    } else {
+      return result;
+    }
+  }
+
   Token op_token = stream_get();
   TokenType value_type = left_token.first;
 
@@ -34,9 +47,7 @@ bool WhereMatcher::parse_conditional() {
   switch(op_token.first) {
     case conditional_eq:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() == parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() == parse_value<float>();
         case value_varchar:
         case value_date:
@@ -45,9 +56,7 @@ bool WhereMatcher::parse_conditional() {
       }
     case conditional_neq:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() != parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() != parse_value<float>();
         case value_varchar:
         case value_date:
@@ -56,9 +65,7 @@ bool WhereMatcher::parse_conditional() {
       }
     case conditional_lt:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() < parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() < parse_value<float>();
         case value_varchar:
         case value_date:
@@ -67,9 +74,7 @@ bool WhereMatcher::parse_conditional() {
       }
     case conditional_gt:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() > parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() > parse_value<float>();
         case value_varchar:
         case value_date:
@@ -79,9 +84,7 @@ bool WhereMatcher::parse_conditional() {
       break;
     case conditional_lte:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() <= parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() <= parse_value<float>();
         case value_varchar:
         case value_date:
@@ -91,9 +94,7 @@ bool WhereMatcher::parse_conditional() {
       break;
     case conditional_gte:
       switch(value_type) {
-        case value_integer:
-          return parse_value<int>() >= parse_value<int>();
-        case value_floating:
+        case value_numeral:
           return parse_value<float>() >= parse_value<float>();
         case value_varchar:
         case value_date:
@@ -111,7 +112,8 @@ bool WhereMatcher::parse_or() {
   Token t = stream_get();
 
   if(t.first == bool_or) {
-    return left || parse_conditional();
+	bool right = parse_and();
+    return left || right;
   } else {
     if(t.first != value_undefined_type) {
       stream_unget(t);
@@ -125,7 +127,8 @@ bool WhereMatcher::parse_and() {
   Token t = stream_get();
 
   if(t.first == bool_and) {
-    return left && parse_or();
+	bool right = parse_and();
+    return left && right;
   } else {
     if(t.first != value_undefined_type) {
       stream_unget(t);
