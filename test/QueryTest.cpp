@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE( query_test1 )
 
 		Now on this table we run a query just getting the top left hand entry of table
 	*/
-	
+
 	Table* query_table1 = d.query("first_column","table1","first_column = 'c1_r1'");
 	/* table from query:
 		first_column
@@ -80,12 +80,12 @@ BOOST_AUTO_TEST_CASE( query_test1 )
 	*/
 	Record query3_table_rec1 = query3_table->at(0);
 	BOOST_CHECK(query3_table->size() == 1);
-	BOOST_CHECK(query3_table->count("first_column") == 1);	
+	BOOST_CHECK(query3_table->count("first_column") == 1);
 	BOOST_CHECK(query3_table_rec1.get<string>("first_column") == "c1_r1");
 
 	/***********
 	Delete from and update will be tested from here until the next test block,
-	since we can't compare the entry we just deleted to anything, I will check the 
+	since we can't compare the entry we just deleted to anything, I will check the
 	next size (number of rows) in the table after deleting
 
 	Delete from will be tested on table1 which still looks like:
@@ -128,33 +128,33 @@ BOOST_AUTO_TEST_CASE( query_test2 )
 	columns.push_back(make_pair("column3",Table::date));
 
 	// make table and set the key
-	Table t1(columns);
+	Table *t1 = new Table(columns);
 	vector<string> the_key;
 	the_key.push_back("column2");
-	t1.set_key(the_key);
-	
+	t1->set_key(the_key);
+
 	// add records
 	vector<pair<string, string>> rec1;
 	rec1.push_back(make_pair("column1", "1"));
 	rec1.push_back(make_pair("column2", "record1"));
 	rec1.push_back(make_pair("column3", "2013/01/01"));
 	Record r1(rec1);
-	t1.insert(r1);
+	t1->insert(r1);
 
 	vector<pair<string, string>> rec2;
 	rec1.push_back(make_pair("column1", "2"));
 	rec1.push_back(make_pair("column2", "record2"));
 	rec1.push_back(make_pair("column3", "2013/01/01"));
 	Record r2(rec2);
-	t1.insert(r2);
+	t1->insert(r2);
 
 	vector<pair<string, string>> rec3;
 	rec1.push_back(make_pair("column1", "3"));
 	rec1.push_back(make_pair("column2", "record3"));
 	rec1.push_back(make_pair("column3", "2013/01/01"));
 	Record r3(rec3);
-	t1.insert(r3);
-	d.add_table("table1",&t1);
+	t1->insert(r3);
+	d.add_table("table1", t1);
 
 	/*table 1 looks like:
 			column1	column2	column3
@@ -257,11 +257,11 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	columns.push_back(make_pair("weight",Table::floating));
 	columns.push_back(make_pair("time_entered",Table::time));
 
-	Table t1(columns);
+	Table *t1 = new Table(columns);
 	vector<string> the_key;
 	the_key.push_back("first_name");
-	t1.set_key(the_key);
-	
+	t1->set_key(the_key);
+
 	// add records
 	vector<pair<string, string>> rec1;
 	rec1.push_back(make_pair("first_name", "Pam"));
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	rec1.push_back(make_pair("weight", "148.7"));
 	rec1.push_back(make_pair("time_entered","03:59:00"));
 	Record r1(rec1);
-	t1.insert(r1);
+	t1->insert(r1);
 
 	vector<pair<string, string>> rec2;
 	rec2.push_back(make_pair("first_name", "George"));
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	rec2.push_back(make_pair("weight", "170.3"));
 	rec2.push_back(make_pair("time_entered","04:02:00"));
 	Record r2(rec2);
-	t1.insert(r2);
+	t1->insert(r2);
 
 	vector<pair<string, string>> rec3;
 	rec3.push_back(make_pair("first_name", "Linda"));
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	rec3.push_back(make_pair("weight", "133.5"));
 	rec3.push_back(make_pair("time_entered","04:03:00"));
 	Record r3(rec3);
-	t1.insert(r3);
+	t1->insert(r3);
 
 	vector<pair<string, string>> rec4;
 	rec4.push_back(make_pair("first_name", "Angela"));
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	rec4.push_back(make_pair("weight", "140.1"));
 	rec4.push_back(make_pair("time_entered","04:05:00"));
 	Record r4(rec4);
-	t1.insert(r4);
+	t1->insert(r4);
 
 	vector<pair<string, string>> rec5;
 	rec5.push_back(make_pair("first_name", "Mildred"));
@@ -306,8 +306,8 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	rec5.push_back(make_pair("weight", "137.2"));
 	rec5.push_back(make_pair("time_entered","04:06:00"));
 	Record r5(rec5);
-	t1.insert(r5);
-	d.add_table("table1",&t1);
+	t1->insert(r5);
+	d.add_table("table1", t1);
 
 	/*table1 looks like:
 		first_name	age		birthdate	weight	time_entered
@@ -406,7 +406,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	// first lets delete the record if the user was entered before 4:03
 	d.delete_from("table1", "time_entered < 04:03:00");
 	BOOST_CHECK(d.table("table1")->size() == 3);
-	
+
 	// now let update weight to just be 130 if it is aleady below 140
 	d.update("table1", "weight < 140", "weight = 130.0");
 	Record update1_table1_r1 = d.table("table1")->at(0);
@@ -438,7 +438,7 @@ BOOST_AUTO_TEST_CASE( query_test5 )
 	vector<string> key;
 	key.push_back("column2");
 	t1->set_key(key);
-	
+
 	vector<pair<string, string>> rec1;
 	rec1.push_back(make_pair("student", "Ruth"));
 	rec1.push_back(make_pair("id", "335"));
@@ -619,7 +619,7 @@ BOOST_AUTO_TEST_CASE( query_test5 )
 	BOOST_CHECK_THROW(d.query("student","students","student = ''Ruth'"), QuerySyntaxError);
 	BOOST_CHECK_THROW(d.delete_from("good_students", "id !!= 500"), QuerySyntaxError);
 	BOOST_CHECK_THROW(d.update("good_gpa", "gpa >= 3.5", "gpa == 2.0"), QuerySyntaxError);
-}	
+}
 
 
 
