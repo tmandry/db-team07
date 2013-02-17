@@ -117,7 +117,7 @@ Table Table::cross_join(const Table& other) const {
 }
 
 Table Table::natural_join(const Table& other) const {
-  return Table();
+  	return Table();
 }
 
 int Table::count(string column_name) const {
