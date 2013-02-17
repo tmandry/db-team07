@@ -18,6 +18,9 @@
     <ClCompile Include="RecordTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TableTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CrossJoinTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,7 +30,7 @@
     <ClCompile Include="QueryTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TableTest.cpp">
+    <ClCompile Include="module.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
