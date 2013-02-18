@@ -67,7 +67,7 @@ void Table::insert(const Record& record) {
     throw ColumnDoesNotExistError("Number of columns in record does not match number of columns in table");
   }
   for (unsigned i = 0; i < record.values_.size(); ++i) {
-    if (!record.values_[i].first.empty() && record.values_[i].first != columns_[i].first) {
+    if (record.values_[i].first != columns_[i].first) {
       throw ColumnDoesNotExistError("Column "+record.values_[i].first+" in record does not match column in table ("+columns_[i].first+")");
     }
   }
