@@ -19,19 +19,21 @@ void Table::add_column(string column_name, RecordType type) {
 }
 
 void Table::del_column(string column_name) {
-	for(ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
-		if(it->first == column_name) {
+	for (ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
+		if (it->first == column_name) {
 			columns_.erase(it);
-      		return;
-   		}
+      return;
+   	}
 	}
 	throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
 
 void Table::rename_column(string from, string to) {
 	for (unsigned i = 0; i < columns_.size(); i++) {
-		if(columns_[i].first == from)
-			columns_[i].first = to;
+		if (columns_[i].first == from) {
+      columns_[i].first = to;
+      break;
+    }
 	}
 	throw ColumnDoesNotExistError("Could not find column " + from);
 }
@@ -68,16 +70,16 @@ void Table::insert(const Record& record) {
   }
   for (unsigned i = 0; i < record.values_.size(); ++i) {
     if (record.values_[i].first != columns_[i].first) {
-      throw ColumnDoesNotExistError("Column "+record.values_[i].first+" in record does not match column in table ("+columns_[i].first+")");
+      throw ColumnDoesNotExistError("Column " + record.values_[i].first + " in record does not match column in table (" + columns_[i].first + ")");
     }
   }
 
   // If there is a key, check for conflicts
-	if(!key().empty()) {
-		for(unsigned i = 0; i < records_.size(); i++) {
+	if (!key().empty()) {
+		for (unsigned i = 0; i < records_.size(); i++) {
       bool unequal = false;
-			for(unsigned j = 0; j < key_.size(); j++) {
-				if(records_[i].get<string>(key_[j]) != record.get<string>(key_[j])) {
+			for (unsigned j = 0; j < key_.size(); j++) {
+				if (records_[i].get<string>(key_[j]) != record.get<string>(key_[j])) {
           unequal = true;
           break;
 				}

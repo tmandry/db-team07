@@ -9,9 +9,9 @@ Tokenizer::Tokenizer(string source) {
 // This looks disgusting, if you have a creative way of splitting it up, go
 // for it.
 vector<Token> Tokenizer::tokenize() {
-  while(stream_.size() > 0) {
+  while (stream_.size() > 0) {
     char c = stream_get();
-    switch(c) {
+    switch (c) {
       // parenthesis_left
       case '(':
         tokens_.push_back( Token(parenthesis_left, "(") );
@@ -153,7 +153,7 @@ char Tokenizer::stream_get(bool skip_space) {
   // find the next, nonspace character
   if (skip_space) {
     c = 32;
-    while(c == 32) {
+    while (c == 32) {
       c = stream_[stream_.size() - 1];
       stream_.pop_back();
     }
@@ -171,7 +171,7 @@ void Tokenizer::stream_unget(char c) {
 
 /** Searches through a string for a specific character */
 bool Tokenizer::string_contains(string source, char target) {
-  for(unsigned i = 0; i < source.size(); i++) {
+  for (unsigned i = 0; i < source.size(); i++) {
     if (source[i] == target) {
       return true;
     }

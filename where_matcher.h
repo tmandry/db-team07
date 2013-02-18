@@ -27,7 +27,7 @@ private:
   T parse_value() {
     Token t = stream_get();
 
-    if(t.first == attribute_name) {
+    if (t.first == attribute_name) {
       return record_.get<T>(t.second);
     } else {
       stringstream ss;
