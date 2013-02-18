@@ -154,6 +154,8 @@ public:
 private:
   typedef map<string, Table*> TableMap;
   TableMap tables_;
+
+  vector<string> split_select(string select);
 };
 
 #endif

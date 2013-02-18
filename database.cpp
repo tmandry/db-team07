@@ -1,6 +1,9 @@
 #include "database.h"
 #include "where_matcher.h"
 
+#include <sstream>
+#include <iostream>
+
 Database::Database() {
 }
 
@@ -45,14 +48,37 @@ Table* Database::table_if_exists(string table_name) {
 }
 
 Table* Database::query(string select, string from, string where) {
-  return new Table;
+  Table *source = table(from);
+  Table *results = new Table(source->columns());
+
+  Table::TableIterator it;
+  WhereMatcher matcher(where);
+  for (it = source->begin(); it != source->end(); it++) {
+    if (matcher.does_match(*it))
+      results->insert(*it);
+  }
+
+  Table::ColumnList all_columns = results->columns();
+  vector<string> columns_to_select = split_select(select);
+  for (unsigned int i = 0; i < all_columns.size(); i++) {
+    // if column in table is not in selected columns, remove it from query
+    if (!(find(columns_to_select.begin(), columns_to_select.end(), all_columns[i].first) != columns_to_select.end()))
+      results->del_column(all_columns[i].first);
+  }
+
+  return results;
 }
 
 void Database::delete_from(string from, string where) {
-	TableMap:: iterator it = tables_.find(from);
-	if (it == tables_.end())
-			throw TableDoesNotExistError("Table " + from + " could not be found");
-	//WhereMatcher(where);
+	Table *source = table(from);
+
+  Table::TableIterator it;
+  WhereMatcher matcher(where);
+  // for (it = source->begin(); it != source->end(); it++) {
+  //   if (matcher.does_match(*it))
+  //     // does not exist yet
+  //     // source->drop(it);
+  // }
 }
 
 void Database::update(string table, string where, string set) {
@@ -73,4 +99,15 @@ void Database::merge(const Database& database) {
 
 Database Database::copy() {
   return Database();
+}
+
+vector<string> Database::split_select(string select) {
+  stringstream ss(select);
+
+  istream_iterator<string> begin(ss);
+  istream_iterator<string> end;
+  vector<string> result(begin, end);
+  std::copy(result.begin(), result.end(), ostream_iterator<string>(cout, "\n"));
+
+  return result;
 }

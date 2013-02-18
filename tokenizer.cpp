@@ -11,6 +11,7 @@ Tokenizer::Tokenizer(string source) {
 vector<Token> Tokenizer::tokenize() {
   while (stream_.size() > 0) {
     char c = stream_get();
+    char second;
     switch (c) {
       // parenthesis_left
       case '(':
@@ -23,26 +24,28 @@ vector<Token> Tokenizer::tokenize() {
         break;
 
       // bool_or
-      case '|':
+      case 'O':
         c = stream_get();
-        if (c == '|') {
-          tokens_.push_back( Token(bool_or, "||") );
+        if (c == 'R') {
+          tokens_.push_back( Token(bool_or, "OR") );
+          break;
         } else {
           stream_unget(c);
-          throw QuerySyntaxError("Invalid syntax in: " + stream_);
+          handle_attribute_name('O');
         }
-        break;
 
       // bool_and
-      case '&':
+      case 'A':
         c = stream_get();
-        if (c == '&') {
-          tokens_.push_back( Token(bool_and, "&&") );
+        second = stream_get();
+        if (c == 'N' && second == 'D') {
+          tokens_.push_back( Token(bool_and, "AND") );
+          break;
         } else {
+          stream_unget(second);
           stream_unget(c);
-          throw QuerySyntaxError("Invalid syntax: " + stream_);
+          handle_attribute_name('A');
         }
-        break;
 
       // condtional_lt / condtional_lte
       case '<':
@@ -95,8 +98,8 @@ vector<Token> Tokenizer::tokenize() {
           while (true) {
             c = stream_get(false);
 
-            // if space or single quote, we are done
-            if (c == 30 || c == 39) {
+            // if single quote, we are done
+            if (c == 39) {
               break;
             }
 
@@ -125,22 +128,26 @@ vector<Token> Tokenizer::tokenize() {
             tokens_.push_back( Token(value_numeral, value) );
           }
         } else {
-          string attribute(1,c);
-          while (true) {
-            c = stream_get(false);
-            if (c != 32 && c != ')') {
-              attribute.push_back(c);
-            } else {
-              tokens_.push_back( Token(attribute_name, attribute) );
-              break;
-            }
-          }
+          handle_attribute_name(c);
         }
         break;
     }
   }
 
   return tokens_;
+}
+
+void Tokenizer::handle_attribute_name(char first) {
+  string attribute(1,first);
+  while (true) {
+    first = stream_get(false);
+    if (first != 32 && first != ')') {
+      attribute.push_back(first);
+    } else {
+      tokens_.push_back( Token(attribute_name, attribute) );
+      break;
+    }
+  }
 }
 
 char Tokenizer::stream_get(bool skip_space) {

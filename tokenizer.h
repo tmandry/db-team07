@@ -50,6 +50,7 @@ private:
   char stream_get(bool include_space = true);
   void stream_unget(char c);
   static bool string_contains(string source, char target);
+  void handle_attribute_name(char first);
 
   vector<Token> tokens_;
   string stream_;
