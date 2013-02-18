@@ -2,7 +2,8 @@ bin/
 obj/
 doc/
 latex/
-Debug/
+/Debug/
+/test/Debug/
 *.user
 *.suo
 *.sublime-project
