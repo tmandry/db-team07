@@ -523,7 +523,7 @@ BOOST_AUTO_TEST_CASE(end_test)
 	r1.set("aaaa", Table::integer);
 	r1.set("bbbb", Table::integer);
 	t.insert(r1);
-	Record test = *t.end();
+	Record test = *t.begin();
 	BOOST_CHECK(test.get<int>("ID") == 1);
 	BOOST_CHECK(test.get<int>("aaaa") == 1);
 	BOOST_CHECK(test.get<int>("bbbb") == 1);

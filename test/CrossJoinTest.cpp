@@ -54,6 +54,9 @@ BOOST_AUTO_TEST_CASE(crossjoins_test2)
 	r12.set("V1", "2");
 	r12.set("V2", "3");
 	r12.set("V3", "B");
+	a->insert(r11);
+	a->insert(r12);
+
 	//Create second table
 	b->add_column("D1", Table::varchar);
 	std::vector<std::string> k2;
@@ -65,6 +68,10 @@ BOOST_AUTO_TEST_CASE(crossjoins_test2)
 	r22.set("D1", "EFGH");
 	Record r23;
 	r23.set("D1", "IJKL");
+	b->insert(r21);
+	b->insert(r22);
+	b->insert(r23);
+
 	Table c = a->cross_join(*b);
 	BOOST_CHECK(c.size() == 6);
 }
@@ -88,6 +95,9 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
 	r12.set("V1", "2");
 	r12.set("V2", "3");
 	r12.set("V3", "B");
+	a->insert(r11);
+	a->insert(r12);
+
 	//Create second table
 	b->add_column("D1", Table::varchar);
 	std::vector<std::string> k2;
@@ -107,6 +117,14 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
 	r26.set("D1", "IJKL");
 	Record r27;
 	r27.set("D1", "IJKL");
+	a->insert(r21);
+	a->insert(r22);
+	a->insert(r23);
+	a->insert(r24);
+	a->insert(r25);
+	a->insert(r26);
+	a->insert(r27);
+
 	Table c = a->cross_join(*b);
 	BOOST_CHECK(c.size() == 14);
 }
@@ -131,7 +149,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
 	r12.set("V2", "3");
 	r12.set("V3", "B");
 	Record r13;
-	r13.set("V1", "2");
+	r13.set("V1", "3");
 	r13.set("V2", "3");
 	r13.set("V3", "B");
 	a->insert(r11);

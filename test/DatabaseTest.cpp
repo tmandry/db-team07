@@ -103,6 +103,7 @@ BOOST_AUTO_TEST_CASE(drop_complex_test)
 	Table* test3 = new Table(t);
 	a.add_table("T3", test3);
 	//Drop one and check for effect on others
+	a.drop_table("Test");
 	BOOST_CHECK(a.table("T2") == test2);
 	BOOST_CHECK(a.table("T3") == test3);
 	//Build vector to test against
@@ -110,7 +111,7 @@ BOOST_AUTO_TEST_CASE(drop_complex_test)
 	comp.push_back("T2");
 	comp.push_back("T3");
 	BOOST_CHECK(a.table_names() == comp);	//Check to see if table names returns properly
-	BOOST_CHECK(a.table_if_exists("AAA") == NULL);
+	BOOST_CHECK(a.table_if_exists("Test") == NULL);
 	BOOST_CHECK(a.table_if_exists("T2") == test2);
 }
 
