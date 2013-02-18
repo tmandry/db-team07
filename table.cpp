@@ -146,6 +146,9 @@ Table Table::natural_join(const Table& other) const {
 }
 
 int Table::count(string column_name) const {
+  if (!has_column(column_name))
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
+
   int ret = 0;
   for (const Record& record : records_) {
     if (record.get<string>(column_name) != "NULL")
@@ -154,3 +157,10 @@ int Table::count(string column_name) const {
   return ret;
 }
 
+bool Table::has_column(string column_name) const
+{
+  for (auto name_type : columns_) {
+    if (name_type.first == column_name) return true;
+  }
+  return false;
+}

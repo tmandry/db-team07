@@ -209,6 +209,8 @@ public:
   T max(string column_name) const;
 
 private:
+  bool has_column(string column_name) const;
+
   deque<Record> records_;
   ColumnList columns_;
   vector<string> key_;
@@ -216,6 +218,9 @@ private:
 
 template<typename T>
 T Table::sum(string column_name) const {
+  if (!has_column(column_name))
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
+
   T sum = 0;
   for (const Record& record : records_)
     sum += record.get<T>(column_name);
@@ -224,6 +229,9 @@ T Table::sum(string column_name) const {
 
 template<typename T>
 T Table::min(string column_name) const {
+  if (!has_column(column_name))
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
+
   T min = numeric_limits<T>::min();
   for (const Record& record : records_)
     min = std::min(min, record.get<T>(column_name));
@@ -232,6 +240,9 @@ T Table::min(string column_name) const {
 
 template<typename T>
 T Table::max(string column_name) const {
+  if (!has_column(column_name))
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
+
   T max = numeric_limits<T>::max();
   for (const Record& record : records_)
     max = std::max(max, record.get<T>(column_name));

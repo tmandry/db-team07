@@ -51,7 +51,7 @@ Table* Database::query(string select, string from, string where) {
 void Database::delete_from(string from, string where) {
 	TableMap:: iterator it = tables_.find(from);
 	if (it == tables_.end())
-			throw TableDoesNotExistError("Table" + from + " could not be found");
+			throw TableDoesNotExistError("Table " + from + " could not be found");
 	//WhereMatcher(where);
 }
 
