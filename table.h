@@ -121,6 +121,14 @@ public:
   void insert(const Record& record);
 
   /**
+   * Removes a row from the table.
+   *
+   * \returns An iterator pointing to the new location of the element that followed the
+   *          last element erased by the function call.
+   */
+  TableIterator drop(TableIterator);
+
+  /**
    * Returns an iterator to the first record in the table.
    *
    * A Table can be treated as a container. The *begin* and *end* functions

@@ -72,13 +72,15 @@ Table* Database::query(string select, string from, string where) {
 void Database::delete_from(string from, string where) {
 	Table *source = table(from);
 
-  Table::TableIterator it;
+  Table::TableIterator it = source->begin();
   WhereMatcher matcher(where);
-  // for (it = source->begin(); it != source->end(); it++) {
-  //   if (matcher.does_match(*it))
-  //     // does not exist yet
-  //     // source->drop(it);
-  // }
+  while (it != source->end()) {
+    if (matcher.does_match(*it)) {
+      it = source->drop(it);
+    } else {
+      it++;
+    }
+  }
 }
 
 void Database::update(string table, string where, string set) {

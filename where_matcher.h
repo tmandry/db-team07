@@ -22,9 +22,15 @@ private:
   bool parse_or();
   bool parse_and();
 
-  // TODO: Handle parenthesis
   template <typename T>
-  T parse_value() {
+  T parse_value();
+
+  Token stream_get();
+  void stream_unget(Token token);
+};
+
+template <typename T>
+T WhereMatcher::parse_value() {
     Token t = stream_get();
 
     if (t.first == attribute_name) {
@@ -39,9 +45,5 @@ private:
       return value;
     }
   }
-
-  Token stream_get();
-  void stream_unget(Token token);
-};
 
 #endif
