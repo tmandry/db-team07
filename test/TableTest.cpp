@@ -2,6 +2,7 @@
 #include <iostream>
 #include "database.h"
 
+static const double TOL = 0.0001;
 
 //CONSTRUCTOR TESTS
 //Default
@@ -24,7 +25,7 @@ BOOST_AUTO_TEST_CASE(constructor_one_column_test)
 	Table::ColumnList c;
 	c.push_back(make_pair("aaaa", Table::integer));
 	Table t(c);
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(constructor_many_columns_test)
@@ -34,7 +35,7 @@ BOOST_AUTO_TEST_CASE(constructor_many_columns_test)
 	c.push_back(make_pair("aaaa", Table::integer));
 	c.push_back(make_pair("bbbb", Table::integer));
 	Table t(c);
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 //ADD_COLUMN TESTS
@@ -44,7 +45,7 @@ BOOST_AUTO_TEST_CASE(add_column_integer)
 	Table::ColumnList c;
 	t.add_column("test", Table::integer);
 	c.push_back(make_pair("test", Table::integer));
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(add_column_floating)
@@ -53,7 +54,7 @@ BOOST_AUTO_TEST_CASE(add_column_floating)
 	Table::ColumnList c;
 	t.add_column("test", Table::floating);
 	c.push_back(make_pair("test", Table::floating));
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(add_column_varchar)
@@ -62,7 +63,7 @@ BOOST_AUTO_TEST_CASE(add_column_varchar)
 	Table::ColumnList c;
 	t.add_column("test", Table::varchar);
 	c.push_back(make_pair("test", Table::varchar));
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(add_column_date)
@@ -71,7 +72,7 @@ BOOST_AUTO_TEST_CASE(add_column_date)
 	Table::ColumnList c;
 	t.add_column("test", Table::date);
 	c.push_back(make_pair("test", Table::date));
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(add_column_time)
@@ -80,7 +81,7 @@ BOOST_AUTO_TEST_CASE(add_column_time)
 	Table::ColumnList c;
 	t.add_column("test", Table::time);
 	c.push_back(make_pair("test", Table::time));
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(add_column_test_nulls)
@@ -127,7 +128,7 @@ BOOST_AUTO_TEST_CASE(delete_column_size)
 	Table t(c);
 	t.del_column("bbbb");
 	c.erase(c.begin()+1);
-	BOOST_CHECK(t.columns() == c); 
+	BOOST_CHECK(t.columns() == c);
 }
 
 BOOST_AUTO_TEST_CASE(delete_column_check_records)
@@ -193,24 +194,24 @@ BOOST_AUTO_TEST_CASE(rename_exception)
 	Table t;
 	t.add_column("test", Table::date);
 	BOOST_CHECK_THROW(t.rename_column("blah", "new test"), ColumnDoesNotExistError);
-}	
-	
+}
+
 //COLUMNS TESTS
 BOOST_AUTO_TEST_CASE(columns_check_from_constructor)
 {
 	Table::ColumnList c;
 	c.push_back(make_pair("test", Table::integer));
 	Table t(c);
-	BOOST_CHECK(t.columns() == c);	
+	BOOST_CHECK(t.columns() == c);
 }
-	
+
 BOOST_AUTO_TEST_CASE(columns_check_from_add)
 {
 	Table t;
 	t.add_column("test", Table::date);
 	Table::ColumnList c;
 	c.push_back(make_pair("test", Table::date));
-	BOOST_CHECK(t.columns() == c);	
+	BOOST_CHECK(t.columns() == c);
 }
 
 //INDEX_FOR TESTS
@@ -241,7 +242,7 @@ BOOST_AUTO_TEST_CASE(index_for_exception)
 }
 */
 
-//SET_KEY TESTS	
+//SET_KEY TESTS
 BOOST_AUTO_TEST_CASE(set_key_column_exception)
 {
 	Table t = Table();
@@ -276,7 +277,7 @@ BOOST_AUTO_TEST_CASE(set_key_invalid_exception)
 	BOOST_CHECK_THROW(t.set_key(keys), InvalidOperationError);
 }
 
-//KEY TESTS					  
+//KEY TESTS
 BOOST_AUTO_TEST_CASE(key_none)
 {
 	Table t;
@@ -295,9 +296,9 @@ BOOST_AUTO_TEST_CASE(key_works)
 	names.push_back("ID");
 	t.set_key(names);
 	BOOST_CHECK(t.key() == names);
-}					  
-					  
-					  
+}
+
+
 //SIZE TESTS
 BOOST_AUTO_TEST_CASE(size_test_none)
 {
@@ -310,7 +311,7 @@ BOOST_AUTO_TEST_CASE(size_test_none)
 	t.set_key(names);
 	BOOST_CHECK(t.size() == 0);
 }
-	
+
 BOOST_AUTO_TEST_CASE(size_test_one)
 {
 	Table t;
@@ -330,8 +331,8 @@ BOOST_AUTO_TEST_CASE(size_test_one)
 	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.size() == 1);
-}	
-	
+}
+
 BOOST_AUTO_TEST_CASE(size_test_many)
 {
 	Table t;
@@ -361,7 +362,7 @@ BOOST_AUTO_TEST_CASE(size_test_many)
 	t.insert(r2);
 	BOOST_CHECK(t.size() == 2);
 }
-	
+
 //INSERT TESTS
 BOOST_AUTO_TEST_CASE(insert_all_nulls)
 {
@@ -389,7 +390,7 @@ BOOST_AUTO_TEST_CASE(insert_some_nulls)
 	t.add_column("bbbb", Table::integer);
 	vector<string> names;
 	names.push_back("ID");
-	t.set_key(names);				 
+	t.set_key(names);
 	vector<pair<string, string> > v1;
 	v1.push_back(make_pair("ID", "1"));
 	Record r1(v1);
@@ -423,7 +424,7 @@ BOOST_AUTO_TEST_CASE(insert_no_nulls)
 	t.add_column("bbbb", Table::integer);
 	vector<string> names;
 	names.push_back("ID");
-	t.set_key(names);	
+	t.set_key(names);
 	vector<pair<string, string> > v1;
 	v1.push_back(make_pair("ID", "1"));
 	v1.push_back(make_pair("aaaa", "1"));
@@ -439,8 +440,8 @@ BOOST_AUTO_TEST_CASE(insert_no_nulls)
 	BOOST_CHECK(t.count("bbbb") == 1);
 	//BOOST_CHECK(t.first() == r1);
 	//BOOST_CHECK(t.last() == r1);
-}	
-					  
+}
+
 BOOST_AUTO_TEST_CASE(insert_key_exception)
 {
 	Table t;
@@ -449,7 +450,7 @@ BOOST_AUTO_TEST_CASE(insert_key_exception)
 	t.add_column("bbbb", Table::integer);
 	vector<string> names;
 	names.push_back("ID");
-	t.set_key(names);	
+	t.set_key(names);
 	Record r1;
 	r1.set("ID", 1);
 	r1.set("aaaa", 1);
@@ -464,7 +465,7 @@ BOOST_AUTO_TEST_CASE(insert_key_exception)
 	r2.set("aaaa", Table::integer);
 	r2.set("bbbb", Table::integer);
 	BOOST_CHECK_THROW(t.insert(r2), KeyConflictError);
-}						  
+}
 
 //BEGIN TESTS
 BOOST_AUTO_TEST_CASE(begin_test)
@@ -501,7 +502,7 @@ BOOST_AUTO_TEST_CASE(begin_test)
 	test = *t.begin();
 	BOOST_CHECK(test.get<int>("ID") == 1);
 	BOOST_CHECK(test.get<int>("aaaa") == 1);
-	BOOST_CHECK(test.get<int>("bbbb") == 1); 
+	BOOST_CHECK(test.get<int>("bbbb") == 1);
 }
 
 //END TESTS
@@ -539,7 +540,7 @@ BOOST_AUTO_TEST_CASE(end_test)
 	test = *t.end();
 	BOOST_CHECK(test.get<int>("ID") == 2);
 	BOOST_CHECK(test.get<int>("aaaa") == 2);
-	BOOST_CHECK(test.get<int>("bbbb") == 2); 
+	BOOST_CHECK(test.get<int>("bbbb") == 2);
 }
 
 //FIRST TESTS
@@ -577,7 +578,7 @@ BOOST_AUTO_TEST_CASE(first_test)
 	test = t.first();
 	BOOST_CHECK(test.get<int>("ID") == 1);
 	BOOST_CHECK(test.get<int>("aaaa") == 1);
-	BOOST_CHECK(test.get<int>("bbbb") == 1); 
+	BOOST_CHECK(test.get<int>("bbbb") == 1);
 }
 
 //LAST TESTS
@@ -615,7 +616,7 @@ BOOST_AUTO_TEST_CASE(last_test)
 	test = t.last();
 	BOOST_CHECK(test.get<int>("ID") == 2);
 	BOOST_CHECK(test.get<int>("aaaa") == 2);
-	BOOST_CHECK(test.get<int>("bbbb") == 2); 
+	BOOST_CHECK(test.get<int>("bbbb") == 2);
 }
 
 //AT TESTS
@@ -659,7 +660,7 @@ BOOST_AUTO_TEST_CASE(at_test)
 	BOOST_CHECK(test.get<int>("aaaa") == 2);
 	BOOST_CHECK(test.get<int>("bbbb") == 2);
 }
-	
+
 BOOST_AUTO_TEST_CASE(at_test_exceptions)
 {
 	Table t;
@@ -680,7 +681,7 @@ BOOST_AUTO_TEST_CASE(at_test_exceptions)
 	t.insert(r1);
 	BOOST_CHECK_THROW(t.at(t.size()), RowDoesNotExistError);
 	BOOST_CHECK_THROW(t.at(-1), RowDoesNotExistError);
-}	
+}
 
 //COUNT TESTS
 BOOST_AUTO_TEST_CASE(count_test_none)
@@ -765,7 +766,7 @@ BOOST_AUTO_TEST_CASE(count_test_regular)
 	BOOST_CHECK(t.count("aaaa") == 2);
 	BOOST_CHECK(t.count("bbbb") == 2);
 }
-	
+
 BOOST_AUTO_TEST_CASE(count_test_exception)
 {
 	Table t;
@@ -777,7 +778,7 @@ BOOST_AUTO_TEST_CASE(count_test_exception)
 	t.set_key(names);
 	BOOST_CHECK_THROW(t.count("blah"), ColumnDoesNotExistError);
 }
-					  
+
 //SUM TESTS
 BOOST_AUTO_TEST_CASE(sum_works)
 {
@@ -925,7 +926,7 @@ BOOST_AUTO_TEST_CASE(min_works)
 	r1.set("time", Table::time);
 	t.insert(r1);
 	BOOST_CHECK(t.min<int>("ID") == 1);
-	BOOST_CHECK(t.min<float>("float") == 2.5);
+	BOOST_CHECK_CLOSE(t.min<float>("float"), 2.5, TOL);
 	BOOST_CHECK(t.min<string>("vchar") == "blah");
 	BOOST_CHECK(t.min<string>("date") == "2013/02/01");
 	BOOST_CHECK(t.min<string>("time") == "04:20:01");
@@ -943,7 +944,7 @@ BOOST_AUTO_TEST_CASE(min_works)
 	r2.set("time", Table::time);
 	t.insert(r2);
 	BOOST_CHECK(t.min<int>("ID") == 1);
-	BOOST_CHECK(t.min<float>("float") == 1.5);
+	BOOST_CHECK_CLOSE(t.min<float>("float"), 1.5, TOL);
 	BOOST_CHECK(t.min<string>("vchar") == "all");
 	BOOST_CHECK(t.min<string>("date") == "2012/01/02");
 	BOOST_CHECK(t.min<string>("time") == "04:20:01");
@@ -1014,7 +1015,7 @@ BOOST_AUTO_TEST_CASE(max_works)
 	r1.set("time", Table::time);
 	t.insert(r1);
 	BOOST_CHECK(t.max<int>("ID") == 1);
-	BOOST_CHECK(t.max<float>("float") == 2.5);
+	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
 	BOOST_CHECK(t.max<string>("vchar") == "blah");
 	BOOST_CHECK(t.max<string>("date") == "2013/02/01");
 	BOOST_CHECK(t.max<string>("time") == "04:20:01");
@@ -1032,7 +1033,7 @@ BOOST_AUTO_TEST_CASE(max_works)
 	r2.set("time", Table::time);
 	t.insert(r2);
 	BOOST_CHECK(t.max<int>("ID") == 2);
-	BOOST_CHECK(t.max<float>("float") == 2.5);
+	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
 	BOOST_CHECK(t.max<string>("vchar") == "blah");
 	BOOST_CHECK(t.max<string>("date") == "2013/02/01");
 	BOOST_CHECK(t.max<string>("time") == "05:20:01");

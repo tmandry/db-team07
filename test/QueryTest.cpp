@@ -1,6 +1,9 @@
 #include <boost/test/unit_test.hpp>
+#include <boost/test/floating_point_comparison.hpp>
 #include <iostream>
 #include "database.h"
+
+static const double TOL = 0.0001;
 
 BOOST_AUTO_TEST_CASE( query_test1 )
 {
@@ -336,19 +339,19 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	BOOST_CHECK(q2_table1_r1.get<string>("first_name") == "George");
 	BOOST_CHECK(q2_table1_r1.get<int>("age") == 33);
 	BOOST_CHECK(q2_table1_r1.get<string>("birthdate") == "1979/10/18");
-	BOOST_CHECK(q2_table1_r1.get<float>("weight") == 170.3);
+	BOOST_CHECK_CLOSE(q2_table1_r1.get<float>("weight"), 170.3, TOL);
 	BOOST_CHECK(q2_table1_r1.get<string>("time_entered") == "04:02:00");
 	Record q2_table1_r2 = q2_table1->at(1);
 	BOOST_CHECK(q2_table1_r2.get<string>("first_name") == "Linda");
 	BOOST_CHECK(q2_table1_r2.get<int>("age") == 59);
 	BOOST_CHECK(q2_table1_r2.get<string>("birthdate") == "1954/02/21");
-	BOOST_CHECK(q2_table1_r2.get<float>("weight") == 133.5);
+	BOOST_CHECK_CLOSE(q2_table1_r2.get<float>("weight"), 133.5, TOL);
 	BOOST_CHECK(q2_table1_r2.get<string>("time_entered") == "04:03:00");
 	Record q2_table1_r3 = q2_table1->at(2);
 	BOOST_CHECK(q2_table1_r3.get<string>("first_name") == "Mildred");
 	BOOST_CHECK(q2_table1_r3.get<int>("age") == 79);
 	BOOST_CHECK(q2_table1_r3.get<string>("birthdate") == "1933/10/05");
-	BOOST_CHECK(q2_table1_r3.get<float>("weight") == 137.2);
+	BOOST_CHECK_CLOSE(q2_table1_r3.get<float>("weight"), 137.2, TOL);
 	BOOST_CHECK(q2_table1_r3.get<string>("time_entered") == "04:06:00");
 
 	// the next query we want the name of people who were
@@ -378,19 +381,19 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	BOOST_CHECK(q4_table1_r1.get<string>("first_name") == "Pam");
 	BOOST_CHECK(q4_table1_r1.get<int>("age") == 64);
 	BOOST_CHECK(q4_table1_r1.get<string>("birthdate") == "1948/09/26");
-	BOOST_CHECK(q4_table1_r1.get<float>("weight") == 148.7);
+	BOOST_CHECK_CLOSE(q4_table1_r1.get<float>("weight"), 148.7, TOL);
 	BOOST_CHECK(q4_table1_r1.get<string>("time_entered") == "03:59:00");
 	Record q4_table1_r2 = q4_table1->at(1);
 	BOOST_CHECK(q4_table1_r2.get<string>("first_name") == "George");
 	BOOST_CHECK(q4_table1_r2.get<int>("age") == 33);
 	BOOST_CHECK(q4_table1_r2.get<string>("birthdate") == "1979/10/18");
-	BOOST_CHECK(q4_table1_r2.get<float>("weight") == 170.3);
+	BOOST_CHECK_CLOSE(q4_table1_r2.get<float>("weight"), 170.3, TOL);
 	BOOST_CHECK(q4_table1_r2.get<string>("time_entered") == "04:02:00");
 	Record q4_table1_r3 = q4_table1->at(2);
 	BOOST_CHECK(q4_table1_r3.get<string>("first_name") == "Angela");
 	BOOST_CHECK(q4_table1_r3.get<int>("age") == 53);
 	BOOST_CHECK(q4_table1_r3.get<string>("birthdate") == "1959/06/07");
-	BOOST_CHECK(q4_table1_r3.get<float>("weight") == 140.1);
+	BOOST_CHECK_CLOSE(q4_table1_r3.get<float>("weight"), 140.1, TOL);
 	BOOST_CHECK(q4_table1_r3.get<string>("time_entered") == "04:05:00");
 
 	/**********
@@ -410,11 +413,11 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	// now let update weight to just be 130 if it is aleady below 140
 	d.update("table1", "weight < 140", "weight = 130.0");
 	Record update1_table1_r1 = d.table("table1")->at(0);
-	BOOST_CHECK(update1_table1_r1.get<float>("weight") == 130.0);
+	BOOST_CHECK_CLOSE(update1_table1_r1.get<float>("weight"), 130.0, TOL);
 	Record update1_table1_r2 = d.table("table1")->at(1);
-	BOOST_CHECK(update1_table1_r2.get<float>("weight") == 140.1);
+	BOOST_CHECK_CLOSE(update1_table1_r2.get<float>("weight"), 140.1, TOL);
 	Record update1_table1_r3 = d.table("table1")->at(2);
-	BOOST_CHECK(update1_table1_r3.get<float>("weight") == 130.0);
+	BOOST_CHECK_CLOSE(update1_table1_r3.get<float>("weight"), 130.0, TOL);
 
 	// now lets delete if the weight is equal to 130
 	d.delete_from("table1", "weight = 130.0");
@@ -612,7 +615,7 @@ BOOST_AUTO_TEST_CASE( query_test5 )
 	// now if a student has a gpa of 3.9 or higher we can round them up to 4.0
 	d.update("students", "gpa >= 3.9", "gpa = 4.0");
 	Record check_update = d.table("students")->at(2); // kenneth should be last entry
-	BOOST_CHECK(check_update.get<float>("gpa") == 4.0);
+	BOOST_CHECK_CLOSE(check_update.get<float>("gpa"), 4.0, TOL);
 
 
 	// exception testing
