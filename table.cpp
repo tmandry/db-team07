@@ -104,6 +104,10 @@ void Table::insert(const Record& record) {
 	records_.push_back(record);
 }
 
+Table::TableIterator Table::drop(Table::TableIterator it) {
+  return records_.erase(it);
+}
+
 Table::TableIterator Table::begin() const {
   return records_.begin();
 }
