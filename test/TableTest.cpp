@@ -99,18 +99,12 @@ BOOST_AUTO_TEST_CASE(add_column_test_nulls)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	vector<pair<string, string> > v2;
 	v2.push_back(make_pair("ID", "2"));
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	t.add_column("cccc", Table::integer);
 	for (int i = 0; i < t.size(); i++) {
@@ -146,18 +140,12 @@ BOOST_AUTO_TEST_CASE(delete_column_check_records)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	vector<pair<string, string> > v2;
 	v2.push_back(make_pair("ID", "2"));
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	t.del_column("bbbb");
 	for (int i = 0; i < t.size(); i++) {
@@ -268,9 +256,6 @@ BOOST_AUTO_TEST_CASE(set_key_invalid_exception)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	vector<string> keys;
 	keys.push_back("aaaa");
@@ -326,9 +311,6 @@ BOOST_AUTO_TEST_CASE(size_test_one)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.size() == 1);
 }
@@ -347,18 +329,12 @@ BOOST_AUTO_TEST_CASE(size_test_many)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	vector<pair<string, string> > v2;
 	v2.push_back(make_pair("ID", "2"));
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	BOOST_CHECK(t.size() == 2);
 }
@@ -394,7 +370,6 @@ BOOST_AUTO_TEST_CASE(insert_some_nulls)
 	vector<pair<string, string> > v1;
 	v1.push_back(make_pair("ID", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.size() == 1);
 	BOOST_CHECK(t.count("ID") == 1);
@@ -406,8 +381,6 @@ BOOST_AUTO_TEST_CASE(insert_some_nulls)
 	v2.push_back(make_pair("ID", "1"));
 	v2.push_back(make_pair("aaaa", "1"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
 	t.insert(r2);
 	BOOST_CHECK(t.size() == 2);
 	BOOST_CHECK(t.count("ID") == 2);
@@ -430,9 +403,6 @@ BOOST_AUTO_TEST_CASE(insert_no_nulls)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.size() == 1);
 	BOOST_CHECK(t.count("ID") == 1);
@@ -461,9 +431,6 @@ BOOST_AUTO_TEST_CASE(insert_key_exception)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	BOOST_CHECK_THROW(t.insert(r2), KeyConflictError);
 }
 
@@ -482,9 +449,6 @@ BOOST_AUTO_TEST_CASE(begin_test)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	Record test = *t.begin();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -495,9 +459,6 @@ BOOST_AUTO_TEST_CASE(begin_test)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	test = *t.begin();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -520,9 +481,6 @@ BOOST_AUTO_TEST_CASE(end_test)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	Record test = *t.begin();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -533,9 +491,6 @@ BOOST_AUTO_TEST_CASE(end_test)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	test = *t.end();
 	BOOST_CHECK(test.get<int>("ID") == 2);
@@ -558,9 +513,6 @@ BOOST_AUTO_TEST_CASE(first_test)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	Record test = t.first();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -571,9 +523,6 @@ BOOST_AUTO_TEST_CASE(first_test)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	test = t.first();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -596,9 +545,6 @@ BOOST_AUTO_TEST_CASE(last_test)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	Record test = t.last();
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -609,9 +555,6 @@ BOOST_AUTO_TEST_CASE(last_test)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	test = t.last();
 	BOOST_CHECK(test.get<int>("ID") == 2);
@@ -634,9 +577,6 @@ BOOST_AUTO_TEST_CASE(at_test)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	Record test = t.at(0);
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -647,9 +587,6 @@ BOOST_AUTO_TEST_CASE(at_test)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	test = t.at(0);
 	BOOST_CHECK(test.get<int>("ID") == 1);
@@ -675,9 +612,6 @@ BOOST_AUTO_TEST_CASE(at_test_exceptions)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK_THROW(t.at(t.size()), RowDoesNotExistError);
 	BOOST_CHECK_THROW(t.at(-1), RowDoesNotExistError);
@@ -715,7 +649,6 @@ BOOST_AUTO_TEST_CASE(count_test_nulls)
 	vector<pair<string, string> > v2;
 	v2.push_back(make_pair("ID", "1"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
 	t.insert(r2);
 	BOOST_CHECK(t.count("ID") == 1);
 	BOOST_CHECK(t.count("aaaa") == 0);
@@ -724,8 +657,6 @@ BOOST_AUTO_TEST_CASE(count_test_nulls)
 	v3.push_back(make_pair("ID", "1"));
 	v3.push_back(make_pair("aaaa", "1"));
 	Record r3(v3);
-	r3.set("ID", Table::integer);
-	r3.set("aaaa", Table::integer);
 	t.insert(r3);
 	BOOST_CHECK(t.count("ID") == 2);
 	BOOST_CHECK(t.count("aaaa") == 1);
@@ -735,9 +666,6 @@ BOOST_AUTO_TEST_CASE(count_test_nulls)
 BOOST_AUTO_TEST_CASE(count_test_regular)
 {
 	Table t;
-	t.add_column("ID", Table::integer);
-	t.add_column("aaaa", Table::integer);
-	t.add_column("bbbb", Table::integer);
 	vector<string> names;
 	names.push_back("ID");
 	t.set_key(names);
@@ -746,9 +674,6 @@ BOOST_AUTO_TEST_CASE(count_test_regular)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.count("ID") == 1);
 	BOOST_CHECK(t.count("aaaa") == 1);
@@ -758,9 +683,6 @@ BOOST_AUTO_TEST_CASE(count_test_regular)
 	v2.push_back(make_pair("aaaa", "2"));
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
 	t.insert(r2);
 	BOOST_CHECK(t.count("ID") == 2);
 	BOOST_CHECK(t.count("aaaa") == 2);
@@ -795,9 +717,6 @@ BOOST_AUTO_TEST_CASE(sum_works)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "2"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK(t.sum<int>("ID") == 1);
 	BOOST_CHECK(t.sum<int>("aaaa") == 1);
@@ -809,10 +728,6 @@ BOOST_AUTO_TEST_CASE(sum_works)
 	v2.push_back(make_pair("bbbb", "-1"));
 	v2.push_back(make_pair("cccc", "0"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("aaaa", Table::integer);
-	r2.set("bbbb", Table::integer);
-	r2.set("cccc", Table::integer);
 	t.insert(r2);
 	BOOST_CHECK(t.sum<int>("ID") == 3);
 	BOOST_CHECK(t.sum<int>("aaaa") == 1);
@@ -834,9 +749,6 @@ BOOST_AUTO_TEST_CASE(sum_column_exception)
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::integer);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK_THROW(t.sum<int>("blah"), ColumnDoesNotExistError);
 }
@@ -855,9 +767,6 @@ BOOST_AUTO_TEST_CASE(sum_numeric_exception)
 	v1.push_back(make_pair("aaaa", "blah"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::varchar);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK_THROW(t.sum<int>("aaaa"), InvalidOperationError);
 }
@@ -876,9 +785,6 @@ BOOST_AUTO_TEST_CASE(sum_type_exception)
 	v1.push_back(make_pair("aaaa", "2013/02/01"));
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("aaaa", Table::date);
-	r1.set("bbbb", Table::integer);
 	t.insert(r1);
 	BOOST_CHECK_THROW(t.sum<char>("aaaa"), InvalidTypeError);
 }
@@ -919,11 +825,6 @@ BOOST_AUTO_TEST_CASE(min_works)
 	v1.push_back(make_pair("date", "2013/02/01"));
 	v1.push_back(make_pair("time", "04:20:01"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("float", Table::floating);
-	r1.set("vchar", Table::varchar);
-	r1.set("date", Table::date);
-	r1.set("time", Table::time);
 	t.insert(r1);
 	BOOST_CHECK(t.min<int>("ID") == 1);
 	BOOST_CHECK_CLOSE(t.min<float>("float"), 2.5, TOL);
@@ -937,11 +838,6 @@ BOOST_AUTO_TEST_CASE(min_works)
 	v2.push_back(make_pair("date", "2012/01/02"));
 	v2.push_back(make_pair("time", "05:20:01"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("float", Table::floating);
-	r2.set("vchar", Table::varchar);
-	r2.set("date", Table::date);
-	r2.set("time", Table::time);
 	t.insert(r2);
 	BOOST_CHECK(t.min<int>("ID") == 1);
 	BOOST_CHECK_CLOSE(t.min<float>("float"), 1.5, TOL);
@@ -1008,11 +904,6 @@ BOOST_AUTO_TEST_CASE(max_works)
 	v1.push_back(make_pair("date", "2013/02/01"));
 	v1.push_back(make_pair("time", "04:20:01"));
 	Record r1(v1);
-	r1.set("ID", Table::integer);
-	r1.set("float", Table::floating);
-	r1.set("vchar", Table::varchar);
-	r1.set("date", Table::date);
-	r1.set("time", Table::time);
 	t.insert(r1);
 	BOOST_CHECK(t.max<int>("ID") == 1);
 	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
@@ -1026,11 +917,6 @@ BOOST_AUTO_TEST_CASE(max_works)
 	v2.push_back(make_pair("date", "2012/01/02"));
 	v2.push_back(make_pair("time", "05:20:01"));
 	Record r2(v2);
-	r2.set("ID", Table::integer);
-	r2.set("float", Table::floating);
-	r2.set("vchar", Table::varchar);
-	r2.set("date", Table::date);
-	r2.set("time", Table::time);
 	t.insert(r2);
 	BOOST_CHECK(t.max<int>("ID") == 2);
 	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
