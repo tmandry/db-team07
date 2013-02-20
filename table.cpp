@@ -19,29 +19,25 @@ void Table::add_column(string column_name, RecordType type) {
 }
 
 void Table::del_column(string column_name) {
-  bool found = false;
-	for (ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
+  if (has_column(column_name) == false)
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
+  for (ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
 		if (it->first == column_name) {
 			columns_.erase(it);
-      found = true;
       return;
      }
 	}
-  if (found == false)
-	  throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
 
 void Table::rename_column(string from, string to) {
-  bool found = false;
+  if (has_column(from) == false)
+    throw ColumnDoesNotExistError("Could not find column " + from);
 	for (unsigned i = 0; i < columns_.size(); i++) {
 		if (columns_[i].first == from) {
       columns_[i].first = to;
-      found = true;
       break;
     }
 	}
-  if (found == false)
-	  throw ColumnDoesNotExistError("Could not find column " + from);
 }
 
 Table::ColumnList Table::columns() const {
@@ -49,14 +45,12 @@ Table::ColumnList Table::columns() const {
 }
 
 unsigned int Table::index_for(string column_name) const {
-  bool found = false;
+  if (has_column(column_name) == false;
+    throw ColumnDoesNotExistError("Could not find column " + column_name);
   for (unsigned int i = 0; i < columns_.size(); ++i)
     if (columns_[i].first == column_name) {
-      found = true;
       return i;
     }
-  if (found == false)
-    throw ColumnDoesNotExistError("Could not find column " + column_name);
 }
 
 void Table::set_key(vector<string> column_names) {
@@ -96,7 +90,6 @@ void Table::insert(const Record& record) {
           break;
 				}
 			}
-
       if (!unequal) {
         throw KeyConflictError("Already a record with this key");
       }
