@@ -76,6 +76,7 @@ BOOST_AUTO_TEST_CASE( query_test1 )
 	/*
 		now we run a query on the table created by query2 to get the top left hand entry
 	*/
+  d.add_table("query2_table", query2_table);
 	Table* query3_table = d.query("first_column","query2_table","first_column = 'c1_r1'");
 	/* table from query:
 		first_column
@@ -145,16 +146,16 @@ BOOST_AUTO_TEST_CASE( query_test2 )
 	t1->insert(r1);
 
 	vector<pair<string, string>> rec2;
-	rec1.push_back(make_pair("column1", "2"));
-	rec1.push_back(make_pair("column2", "record2"));
-	rec1.push_back(make_pair("column3", "2013/01/01"));
+	rec2.push_back(make_pair("column1", "2"));
+	rec2.push_back(make_pair("column2", "record2"));
+	rec2.push_back(make_pair("column3", "2013/01/01"));
 	Record r2(rec2);
 	t1->insert(r2);
 
 	vector<pair<string, string>> rec3;
-	rec1.push_back(make_pair("column1", "3"));
-	rec1.push_back(make_pair("column2", "record3"));
-	rec1.push_back(make_pair("column3", "2013/01/01"));
+	rec3.push_back(make_pair("column1", "3"));
+	rec3.push_back(make_pair("column2", "record3"));
+	rec3.push_back(make_pair("column3", "2013/01/01"));
 	Record r3(rec3);
 	t1->insert(r3);
 	d.add_table("table1", t1);
@@ -356,7 +357,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 
 	// the next query we want the name of people who were
 	// entered after 04:00:00 AND their bday is before 1960/01/01
-	Table* q3_table1 = d.query("first_name", "table1", "time_entered > 04:00:00 AND birtdate < 1960/01/01");
+	Table* q3_table1 = d.query("first_name", "table1", "time_entered > 04:00:00 AND birthdate < 1960/01/01");
 	// this should produce Linda, Angela, and Mildred
 	Record q3_table1_r1 = q3_table1->at(0);
 	BOOST_CHECK(q3_table1_r1.get<string>("first_name") == "Linda");

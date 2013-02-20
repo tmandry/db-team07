@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test1)
 	Table* a = new Table();
 	Table* b = new Table();
 	//Create first table
-	a->add_column("V1", Table::integer);	
+	a->add_column("V1", Table::integer);
 	std::vector<std::string> k;
 	k.push_back("V1");
 	a->set_key(k);
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test2)
 	Table* a = new Table();
 	Table* b = new Table();
 	//Create first table
-	a->add_column("V1", Table::integer);	
+	a->add_column("V1", Table::integer);
 	a->add_column("V2", Table::integer);
 	a->add_column("V3", Table::varchar);
 	std::vector<std::string> k;
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
 	Table* a = new Table();
 	Table* b = new Table();
 	//Create first table
-	a->add_column("V1", Table::integer);	
+	a->add_column("V1", Table::integer);
 	a->add_column("V2", Table::integer);
 	a->add_column("V3", Table::varchar);
 	std::vector<std::string> k;
@@ -110,20 +110,20 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
 	Record r23;
 	r23.set("D1", "IJKL");
 	Record r24;
-	r24.set("D1", "IJKL");
+	r24.set("D1", "MNOP");
 	Record r25;
-	r25.set("D1", "IJKL");
+	r25.set("D1", "QRST");
 	Record r26;
-	r26.set("D1", "IJKL");
+	r26.set("D1", "UVWY");
 	Record r27;
-	r27.set("D1", "IJKL");
-	a->insert(r21);
-	a->insert(r22);
-	a->insert(r23);
-	a->insert(r24);
-	a->insert(r25);
-	a->insert(r26);
-	a->insert(r27);
+	r27.set("D1", "Z123");
+	b->insert(r21);
+	b->insert(r22);
+	b->insert(r23);
+	b->insert(r24);
+	b->insert(r25);
+	b->insert(r26);
+	b->insert(r27);
 
 	Table c = a->cross_join(*b);
 	BOOST_CHECK(c.size() == 14);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
 	Table* a = new Table();
 	Table* b = new Table();
 	//Create first table
-	a->add_column("V1", Table::integer);	
+	a->add_column("V1", Table::integer);
 	a->add_column("V2", Table::integer);
 	a->add_column("V3", Table::varchar);
 	std::vector<std::string> k;
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
 	b->add_column("D1", Table::varchar);
 	std::vector<std::string> k2;
 	k2.push_back("D1");
-	b->set_key(k);
+	b->set_key(k2);
 	Record r21;
 	r21.set("D1", "ABCD");
 	Record r22;
@@ -167,13 +167,13 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
 	Record r23;
 	r23.set("D1", "IJKL");
 	Record r24;
-	r24.set("D1", "IJKL");
+	r24.set("D1", "MNOP");
 	Record r25;
-	r25.set("D1", "IJKL");
+	r25.set("D1", "QRST");
 	Record r26;
-	r26.set("D1", "IJKL");
+	r26.set("D1", "UVWY");
 	Record r27;
-	r27.set("D1", "IJKL");
+	r27.set("D1", "Z123");
 	b->insert(r21);
 	b->insert(r22);
 	b->insert(r23);
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test1)
 		1		a					1		dcb
 		2		b					3		dfg
 									5		adc
-									
+
 					key		second		third
 					1		a			dcb
 	*/
@@ -358,7 +358,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test2)
 		1		a					1		dcb
 		2		b					2		dfg
 									5		adc
-									
+
 					key		second		third
 					1		a			dcb
 					2		b			dfg
@@ -411,7 +411,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test3)
 		2		b					2		dfg
 		4		c					5		adc
 		5		e
-									
+
 					key		second		third
 					1		a			dcb
 					2		b			dfg
@@ -487,11 +487,11 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test4)
 		4		c					50		adc
 		3		e					42		dee
 		9		r					41		aeeeee
-		5		e					
-		6		a					
+		5		e
+		6		a
 		7		er
 		8		qe
-		
+
 					key		second		third
 					1		a			dcb
 	*/
@@ -553,7 +553,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test5)
 		4		c					4		adc
 		3		e					3		dee
 		9		r					9		aeeeee
-		
+
 					key		second		third
 					1		a			dcb
 					2		b			dfg

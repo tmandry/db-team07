@@ -60,8 +60,10 @@ unsigned int Table::index_for(string column_name) const {
 }
 
 void Table::set_key(vector<string> column_names) {
-	// needs to check for duplicates within row
-	// done in insert function?
+	// TODO needs to check for duplicates within row
+	for (string col : column_names)
+    if (find(columns_.begin(), columns_.end(), col) == columns_.end())
+      throw ColumnDoesNotExistError("Could not find column " + col);
 	key_ = column_names;
 }
 
