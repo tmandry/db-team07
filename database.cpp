@@ -89,11 +89,11 @@ void Database::update(string table_name, string where, string set) {
 		throw TableDoesNotExistError("Table " + table_name + " does not exist");
   Table::TableIterator it;
   WhereMatcher matcher(where);
-  for (it = source->begin(); it != source->end(); it++) {
-    if (matcher.does_match(*it))
-      ;// TODO set new value
-  }
-
+  for (it = source->begin(); it != source->end(); it++)
+    if (matcher.does_match(*it)) {
+      // TODO set new value
+      break;
+    }
 }
 
 void Database::save(string filename) {

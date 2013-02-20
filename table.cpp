@@ -45,7 +45,7 @@ Table::ColumnList Table::columns() const {
 }
 
 unsigned int Table::index_for(string column_name) const {
-  if (has_column(column_name) == false;
+  if (has_column(column_name) == false)
     throw ColumnDoesNotExistError("Could not find column " + column_name);
   for (unsigned int i = 0; i < columns_.size(); ++i)
     if (columns_[i].first == column_name) {
@@ -120,9 +120,10 @@ const Record& Table::last() const {
 }
 
 const Record& Table::at(unsigned int i) const {
+  if (i > records_.size())
+    throw InvalidOperationError("Index out of Range");
   return records_.at(i);
-  // TODO catch/rethrow exception
-  throw InvalidOperationError("Index out of Range");
+
 }
 
 Table Table::cross_join(const Table& other) const {
