@@ -22,8 +22,8 @@ void Table::del_column(string column_name) {
   if (has_column(column_name) == false)
     throw ColumnDoesNotExistError("Could not find column " + column_name);
   for (ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
-		if (it->first == column_name) {
-			columns_.erase(it);
+	  if (it->first == column_name) {
+		  columns_.erase(it);
       return;
      }
 	}
@@ -128,7 +128,6 @@ const Record& Table::at(unsigned int i) const {
   if (i > records_.size())
     throw InvalidOperationError("Index out of Range");
   return records_.at(i);
-
 }
 
 Table Table::cross_join(const Table& other) const {
