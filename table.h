@@ -233,6 +233,8 @@ T Table::sum(string column_name) const {
   for (const Record& record : records_)
     sum += record.get<T>(column_name);
   return sum;
+  // TODO find away to throw this exception
+  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 template<typename T>
@@ -244,6 +246,8 @@ T Table::min(string column_name) const {
   for (const Record& record : records_)
     min = std::min(min, record.get<T>(column_name));
   return min;
+  // TODO find away to throw this exception
+  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 template<typename T>
@@ -255,6 +259,8 @@ T Table::max(string column_name) const {
   for (const Record& record : records_)
     max = std::max(max, record.get<T>(column_name));
   return max;
+  // TODO find away to throw this exception
+  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 #endif  // TABLE_H_
