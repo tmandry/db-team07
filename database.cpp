@@ -90,8 +90,8 @@ void Database::update(string table_name, string where, string set) {
   Table::TableIterator it;
   WhereMatcher matcher(where);
   for (it = source->begin(); it != source->end(); it++) {
-  if (matcher.does_match(*it))
-    // set new value
+    if (matcher.does_match(*it))
+      ;// TODO set new value
   }
 
 }
