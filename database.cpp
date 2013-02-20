@@ -81,7 +81,16 @@ void Database::delete_from(string from, string where) {
   // }
 }
 
-void Database::update(string table, string where, string set) {
+void Database::update(string table_name, string where, string set) {
+	Table *source = table_if_exists(table_name);
+	if (source == 0)
+		throw TableDoesNotExistError("Table " + table_name + " does not exist");
+  Table::TableIterator it;
+  WhereMatcher matcher(where);
+  for (it = source->begin(); it != source->end(); it++) {
+  if (matcher.does_match(*it))
+    // set new value
+  }
 
 }
 

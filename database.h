@@ -118,11 +118,11 @@ public:
     Throws a \a TableDoesNotExistError if \a table does not exist.
     Throws a \a QuerySyntaxError if \a where or \a set have a syntax error.
 
-    \param table name of the table to update records in
+    \param table_name name of the table to update records in
     \param where a SQL where clause to find records in the table
     \param set a SQL set clause
    */
-  void update(string table, string where, string set);
+  void update(string table_name, string where, string set);
 
   /**
     Save the database to a file
