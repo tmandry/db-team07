@@ -116,7 +116,6 @@ public:
         return;
       }
     }
-
     // add to end
     values_.push_back(make_pair(field, string_value));
   }
