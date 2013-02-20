@@ -45,19 +45,24 @@ Table::ColumnList Table::columns() const {
 }
 
 unsigned int Table::index_for(string column_name) const {
-  if (has_column(column_name) == false)
+  if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
   for (unsigned int i = 0; i < columns_.size(); ++i)
-    if (columns_[i].first == column_name) {
+    if (columns_[i].first == column_name)
       return i;
-    }
 }
 
 void Table::set_key(vector<string> column_names) {
 	// TODO needs to check for duplicates within row
-	for (string col : column_names)
-    if (find(columns_.begin(), columns_.end(), col) == columns_.end())
+  bool key_found;
+	for (string col : column_names) {
+    key_found = false;
+    for (ColumnList::iterator it = columns_.begin(); it != columns_.end(); it++)
+      if (it->first == col)
+        key_found = true;
+    if (!key_found)
       throw ColumnDoesNotExistError("Could not find column " + col);
+  }
 	key_ = column_names;
 }
 
