@@ -15,7 +15,7 @@ void SetUpdater::update(Record record) {
 }
 
 void SetUpdater::parse_update() {
-  while (tokens_.size() % 3 == 0) {
+  while (tokens_.size() > 0 && tokens_.size() % 3 == 0) {
     Token attribute = stream_get();
     Token op = stream_get();
     Token value = stream_get();

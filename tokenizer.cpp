@@ -142,7 +142,7 @@ void Tokenizer::handle_attribute_name(char first) {
   string attribute(1,first);
   while (true) {
     first = stream_get(false);
-    if (first != 32 && first != ')') {
+    if (first != NULL && first != ' ' && first != ')') {
       attribute.push_back(first);
     } else {
       tokens_.push_back( Token(attribute_name, attribute) );
