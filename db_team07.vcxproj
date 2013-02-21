@@ -79,6 +79,7 @@
     <ClInclude Include="database.h" />
     <ClInclude Include="exception.h" />
     <ClInclude Include="record.h" />
+    <ClInclude Include="set_updater.h" />
     <ClInclude Include="table.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="where_matcher.h" />
@@ -86,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="database.cpp" />
     <ClCompile Include="record.cpp" />
+    <ClCompile Include="set_updater.cpp" />
     <ClCompile Include="table.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="where_matcher.cpp" />

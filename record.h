@@ -72,21 +72,7 @@ public:
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  T get(string field) const {
-    for(unsigned i = 0; i < values_.size(); i++) {
-      if(values_[i].first == field) {
-        stringstream ss;
-        ss << values_[i].second;
-
-        T value;
-        ss >> value;
-
-        return value;
-      }
-    }
-
-    throw ColumnDoesNotExistError(field);
-  }
+  T get(string field) const;
 
   /**
     Set the value of a field by column name. The field is converted from the
@@ -104,21 +90,7 @@ public:
     \param field The name of the field (column) in the record.
    */
   template <typename T>
-  void set(string field, T new_value) {
-    stringstream ss;
-    ss << new_value;
-    string string_value;
-    ss >> string_value;
-
-    for(unsigned i = 0; i < values_.size(); i++) {
-      if(values_[i].first == field) {
-        values_[i].second = string_value;
-        return;
-      }
-    }
-    // add to end
-    values_.push_back(make_pair(field, string_value));
-  }
+  void set(string field, T new_value);
 
 protected:
   friend class Table;
@@ -128,5 +100,39 @@ protected:
 private:
   vector<pair<string, string> > values_;
 };
+
+template <typename T>
+T Record::get(string field) const {
+  for (unsigned i = 0; i < values_.size(); i++) {
+    if (values_[i].first == field) {
+      stringstream ss;
+      ss << values_[i].second;
+
+      T value;
+      ss >> value;
+
+      return value;
+    }
+  }
+
+  throw ColumnDoesNotExistError(field);
+}
+
+template <typename T>
+void Record::set(string field, T new_value) {
+  stringstream ss;
+  ss << new_value;
+  string string_value;
+  ss >> string_value;
+
+  for(unsigned i = 0; i < values_.size(); i++) {
+    if(values_[i].first == field) {
+      values_[i].second = string_value;
+      return;
+    }
+  }
+  // add to end
+  values_.push_back(make_pair(field, string_value));
+}
 
 #endif

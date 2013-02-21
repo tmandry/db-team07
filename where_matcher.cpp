@@ -3,7 +3,7 @@
 #include <sstream>
 
 WhereMatcher::WhereMatcher(string where_clause) {
-  Tokenizer tokenizer(where_clause);
+  Tokenizer tokenizer(TokenizerType::where, where_clause);
   query_ = tokenizer.tokenize();
   query_ = vector<Token>(query_.rbegin(), query_.rend());
 }

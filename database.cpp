@@ -1,5 +1,6 @@
 #include "database.h"
 #include "where_matcher.h"
+#include "set_updater.h"
 
 #include <sstream>
 #include <iostream>
@@ -85,16 +86,17 @@ void Database::delete_from(string from, string where) {
 }
 
 void Database::update(string table_name, string where, string set) {
-	Table *source = table_if_exists(table_name);
-	if (source == 0)
-		throw TableDoesNotExistError("Table " + table_name + " does not exist");
+  Table *source = table(table_name);
+
   Table::TableIterator it;
   WhereMatcher matcher(where);
-  for (it = source->begin(); it != source->end(); it++)
+  SetUpdater updater(set);
+  for (it = source->begin(); it != source->end(); it++) {
     if (matcher.does_match(*it)) {
-      // TODO set new value
-      break;
+      updater.update(*it);
     }
+  }
+
 }
 
 void Database::save(string filename) {

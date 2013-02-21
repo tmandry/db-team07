@@ -2,7 +2,8 @@
 
 #include <sstream>
 
-Tokenizer::Tokenizer(string source) {
+Tokenizer::Tokenizer(TokenizerType type, string source) {
+  type_ = type;
   stream_ = string ( source.rbegin(), source.rend() );
 }
 
@@ -157,17 +158,19 @@ char Tokenizer::stream_get(bool skip_space) {
   }
 
   char c;
-  // find the next, nonspace character
-  if (skip_space) {
-    c = 32;
-    while (c == 32) {
+  // find the next, nonspace (and if update, noncomma) character
+  do {
+    if (skip_space) {
+      c = 32;
+      while (c == 32) {
+        c = stream_[stream_.size() - 1];
+        stream_.pop_back();
+      }
+    } else {
       c = stream_[stream_.size() - 1];
       stream_.pop_back();
     }
-  } else {
-    c = stream_[stream_.size() - 1];
-    stream_.pop_back();
-  }
+  } while (c == ',' && type_ == update);
 
   return c;
 }

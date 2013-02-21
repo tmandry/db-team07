@@ -33,6 +33,9 @@
     <ClInclude Include="where_matcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="set_updater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="database.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="where_matcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="set_updater.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

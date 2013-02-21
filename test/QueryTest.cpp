@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	// the user was entered before 04:00:00 AND the user was born on 1948/09/26 (Pam) OR
 	// the user's name is George
 	Table* q4_table1 = d.query("*", "table1",
-		"(age < 60 AND weight < 140) OR (time_entered < 04:00:00 AND birthdate = 1948/09/26) OR (first_name='George')");
+		"(age < 60 AND weight < 140) OR (time_entered < 04:00:00 AND birthdate = 1948/09/26) OR (first_name = 'George')");
 	/*q4_table1 should look like:
 		first_name	age		birthdate	weight	time_entered
 	r1	Pam			64		1948/09/26	148.7	03:59:00
@@ -390,12 +390,6 @@ BOOST_AUTO_TEST_CASE( query_test3 )
 	BOOST_CHECK(q4_table1_r2.get<string>("birthdate") == "1979/10/18");
 	BOOST_CHECK_CLOSE(q4_table1_r2.get<float>("weight"), 170.3, TOL);
 	BOOST_CHECK(q4_table1_r2.get<string>("time_entered") == "04:02:00");
-	Record q4_table1_r3 = q4_table1->at(2);
-	BOOST_CHECK(q4_table1_r3.get<string>("first_name") == "Angela");
-	BOOST_CHECK(q4_table1_r3.get<int>("age") == 53);
-	BOOST_CHECK(q4_table1_r3.get<string>("birthdate") == "1959/06/07");
-	BOOST_CHECK_CLOSE(q4_table1_r3.get<float>("weight"), 140.1, TOL);
-	BOOST_CHECK(q4_table1_r3.get<string>("time_entered") == "04:05:00");
 
 	/**********
 		now we get to delete and update again, table looks like this for a refresher:
@@ -440,13 +434,13 @@ BOOST_AUTO_TEST_CASE( query_test5 )
 	t1->add_column("id", Table::integer);
 	t1->add_column("gpa", Table::floating);
 	vector<string> key;
-	key.push_back("column2");
+	key.push_back("id");
 	t1->set_key(key);
 
 	vector<pair<string, string>> rec1;
 	rec1.push_back(make_pair("student", "Ruth"));
 	rec1.push_back(make_pair("id", "335"));
-	rec1.push_back(make_pair("id", "2.7"));
+	rec1.push_back(make_pair("gpa", "2.7"));
 	Record r1(rec1);
 	t1->insert(r1);
 	vector<pair<string, string>> rec2;

@@ -32,6 +32,11 @@ enum TokenType {
   attribute_name        = 15
 };
 
+enum TokenizerType {
+  where                 = 0,
+  update                = 1
+};
+
 /**
  * A token is used in parsing to split a string into easy to use blocks of logic
  * associated with its purpose.
@@ -42,7 +47,7 @@ class Tokenizer {
 public:
 
   /** Constructors takes the source string to be parsed */
-  Tokenizer(string source);
+  Tokenizer(TokenizerType type, string source);
 
   /** Returns a vector of tokens parsed from a where clause */
   vector<Token> tokenize();
@@ -54,6 +59,7 @@ private:
 
   vector<Token> tokens_;
   string stream_;
+  TokenizerType type_;
 };
 
 
