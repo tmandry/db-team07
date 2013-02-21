@@ -62,6 +62,11 @@ public:
   ~Table();
 
   /**
+   * Returns a pointer to a new table with the same columns and keys
+   */
+  Table* Table::clone_structure();
+
+  /**
    * Adds a column to the end of the table.
    *
    * Existing entries will be NULL for this column.

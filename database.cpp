@@ -49,7 +49,7 @@ Table* Database::table_if_exists(string table_name) {
 
 Table* Database::query(string select, string from, string where) {
   Table *source = table(from);
-  Table *results = new Table(source->columns());
+  Table *results = source->clone_structure();
 
   Table::TableIterator it;
   WhereMatcher matcher(where);
@@ -60,11 +60,12 @@ Table* Database::query(string select, string from, string where) {
 
   Table::ColumnList all_columns = results->columns();
   vector<string> columns_to_select = split_select(select);
-  for (unsigned int i = 0; i < all_columns.size(); i++) {
-    // if column in table is not in selected columns, remove it from query
-    if (!(find(columns_to_select.begin(), columns_to_select.end(), all_columns[i].first) != columns_to_select.end()))
-      results->del_column(all_columns[i].first);
-  }
+  if (columns_to_select[0] != "*")
+    for (unsigned int i = 0; i < all_columns.size(); i++) {
+      // if column in table is not in selected columns, remove it from query
+      if (!(find(columns_to_select.begin(), columns_to_select.end(), all_columns[i].first) != columns_to_select.end()))
+        results->del_column(all_columns[i].first);
+    }
 
   return results;
 }

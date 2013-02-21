@@ -123,6 +123,7 @@ public:
 protected:
   friend class Table;
   void join(const Record& other);
+  void erase(string field);
 
 private:
   vector<pair<string, string> > values_;

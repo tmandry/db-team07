@@ -14,6 +14,13 @@ Table::Table(const ColumnList& columns) {
 Table::~Table() {
 }
 
+Table* Table::clone_structure() {
+  Table *clone = new Table(columns());
+  clone->set_key(key());
+
+  return clone;
+}
+
 void Table::add_column(string column_name, RecordType type) {
 	columns_.push_back(make_pair(column_name, type));
 }
@@ -21,9 +28,11 @@ void Table::add_column(string column_name, RecordType type) {
 void Table::del_column(string column_name) {
   if (has_column(column_name) == false)
     throw ColumnDoesNotExistError("Could not find column " + column_name);
-  for (ColumnList::iterator it = columns_.begin(); it < columns_.end(); ++it) {
+  for (ColumnList::iterator it = columns_.begin(); it != columns_.end(); ++it) {
 	  if (it->first == column_name) {
 		  columns_.erase(it);
+      for (deque<Record>::iterator itt = records_.begin(); itt != records_.end(); itt++)
+        itt->erase(column_name);
       return;
      }
 	}

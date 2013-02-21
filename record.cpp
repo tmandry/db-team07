@@ -24,3 +24,11 @@ Record::RecordIterator Record::end() const {
 void Record::join(const Record& other) {
   values_.insert(values_.end(), other.values_.begin(), other.values_.end());
 }
+
+void Record::erase(string field) {
+  for (RecordIterator it = begin(); it != end(); it++)
+    if (it->first == field) {
+      values_.erase(it);
+      return;
+    }
+}
