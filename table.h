@@ -233,7 +233,7 @@ T Table::sum(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
   for (const pair<string, RecordType>& col : columns_)
-    if (col.first == column_name && col.second != integer && col.second != floating)
+    if (col.first == column_name && (col.second != integer || col.second != floating))
       throw InvalidOperationError("Column " + column_name + " is not numeric");
 
   T sum = 0;
@@ -248,6 +248,8 @@ template<typename T>
 T Table::min(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
+  if (!TypeIsValid<T>::value)
+    throw InvalidTypeError("Invalid type conversion in column: " + column_name);
 
   if (records_.size() == 0)
     return NULL;
@@ -282,6 +284,8 @@ template<typename T>
 T Table::max(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
+  if (!TypeIsValid<T>::value)
+    throw InvalidTypeError("Invalid type conversion in column: " + column_name);
 
   if (records_.size() == 0)
     return NULL;
@@ -311,5 +315,7 @@ string Table::max(string column_name) const {
   // TODO find away to throw this exception
   // throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
+
+// check return in min() and max()
 
 #endif  // TABLE_H_
