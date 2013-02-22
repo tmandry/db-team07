@@ -61,6 +61,8 @@ unsigned int Table::index_for(string column_name) const {
 }
 
 void Table::set_key(vector<string> column_names) {
+  if (size() != 0)
+    throw InvalidOperationError("Cannot add key to non-empty table");
 	// TODO needs to check for duplicates within row
   bool key_found;
 	for (string col : column_names) {
@@ -158,10 +160,9 @@ int Table::count(string column_name) const {
     throw ColumnDoesNotExistError("Could not find column " + column_name);
 
   int ret = 0;
-  for (const Record& record : records_) {
+  for (const Record& record : records_)
     if (record.get<string>(column_name) != "NULL")
       ++ret;
-  }
   return ret;
 }
 
@@ -169,11 +170,10 @@ void Table::drop_where(string where) {
   deque<Record>::iterator it = records_.begin();
   WhereMatcher matcher(where);
   while (it != records_.end()) {
-    if (matcher.does_match(*it)) {
+    if (matcher.does_match(*it))
       it = drop(it);
-    } else {
+    else
       it++;
-    }
   }
 }
 
@@ -181,17 +181,14 @@ void Table::update(string where, string set) {
   deque<Record>::iterator it;
   WhereMatcher matcher(where);
   SetUpdater updater(set);
-  for (it = records_.begin(); it != records_.end(); it++) {
-    if (matcher.does_match(*it)) {
+  for (it = records_.begin(); it != records_.end(); it++)
+    if (matcher.does_match(*it))
       updater.update(it);
-    }
-  }
 }
 
 bool Table::has_column(string column_name) const {
-  for (auto name_type : columns_) {
+  for (auto name_type : columns_)
     if (name_type.first == column_name) return true;
-  }
   return false;
 }
 

@@ -358,36 +358,39 @@ BOOST_AUTO_TEST_CASE(insert_all_nulls)
 	//BOOST_CHECK(t.last() == r1);
 }
 
-BOOST_AUTO_TEST_CASE(insert_some_nulls)
-{
-	Table t;
-	t.add_column("ID", Table::integer);
-	t.add_column("aaaa", Table::integer);
-	t.add_column("bbbb", Table::integer);
-	vector<string> names;
-	names.push_back("ID");
-	t.set_key(names);
-	vector<pair<string, string> > v1;
-	v1.push_back(make_pair("ID", "1"));
-	Record r1(v1);
-	t.insert(r1);
-	BOOST_CHECK(t.size() == 1);
-	BOOST_CHECK(t.count("ID") == 1);
-	BOOST_CHECK(t.count("aaaa") == 0);
-	BOOST_CHECK(t.count("bbbb") == 0);
-	//BOOST_CHECK(t.first() == r1);
-	//BOOST_CHECK(t.last() == r1);
-	vector<pair<string, string> > v2;
-	v2.push_back(make_pair("ID", "1"));
-	v2.push_back(make_pair("aaaa", "1"));
-	Record r2(v2);
-	t.insert(r2);
-	BOOST_CHECK(t.size() == 2);
-	BOOST_CHECK(t.count("ID") == 2);
-	BOOST_CHECK(t.count("aaaa") == 1);
-	BOOST_CHECK(t.count("bbbb") == 0);
-	//BOOST_CHECK(t.last() == r2);
-}
+
+// You can't insert records without values for a column according to the api,
+// so these tests don't make sense
+// BOOST_AUTO_TEST_CASE(insert_some_nulls)
+// {
+// 	Table t;
+// 	t.add_column("ID", Table::integer);
+// 	t.add_column("aaaa", Table::integer);
+// 	t.add_column("bbbb", Table::integer);
+// 	vector<string> names;
+// 	names.push_back("ID");
+// 	t.set_key(names);
+// 	vector<pair<string, string> > v1;
+// 	v1.push_back(make_pair("ID", "1"));
+// 	Record r1(v1);
+// 	t.insert(r1);
+// 	BOOST_CHECK(t.size() == 1);
+// 	BOOST_CHECK(t.count("ID") == 1);
+// 	BOOST_CHECK(t.count("aaaa") == 0);
+// 	BOOST_CHECK(t.count("bbbb") == 0);
+// 	//BOOST_CHECK(t.first() == r1);
+// 	//BOOST_CHECK(t.last() == r1);
+// 	vector<pair<string, string> > v2;
+// 	v2.push_back(make_pair("ID", "1"));
+// 	v2.push_back(make_pair("aaaa", "1"));
+// 	Record r2(v2);
+// 	t.insert(r2);
+// 	BOOST_CHECK(t.size() == 2);
+// 	BOOST_CHECK(t.count("ID") == 2);
+// 	BOOST_CHECK(t.count("aaaa") == 1);
+// 	BOOST_CHECK(t.count("bbbb") == 0);
+// 	//BOOST_CHECK(t.last() == r2);
+// }
 
 BOOST_AUTO_TEST_CASE(insert_no_nulls)
 {
@@ -632,40 +635,45 @@ BOOST_AUTO_TEST_CASE(count_test_none)
 	BOOST_CHECK(t.count("bbbb") == 0);
 }
 
-BOOST_AUTO_TEST_CASE(count_test_nulls)
+// You can't insert records without values for a column according to the api,
+// so these tests don't make sense
+// BOOST_AUTO_TEST_CASE(count_test_nulls)
+// {
+// 	Table t;
+// 	t.add_column("ID", Table::integer);
+// 	t.add_column("aaaa", Table::integer);
+// 	t.add_column("bbbb", Table::integer);
+// 	vector<string> names;
+// 	names.push_back("ID");
+// 	t.set_key(names);
+// 	Record r1;
+// 	t.insert(r1);
+// 	BOOST_CHECK(t.count("ID") == 0);
+// 	BOOST_CHECK(t.count("aaaa") == 0);
+// 	BOOST_CHECK(t.count("bbbb") == 0);
+// 	vector<pair<string, string> > v2;
+// 	v2.push_back(make_pair("ID", "1"));
+// 	Record r2(v2);
+// 	t.insert(r2);
+// 	BOOST_CHECK(t.count("ID") == 1);
+// 	BOOST_CHECK(t.count("aaaa") == 0);
+// 	BOOST_CHECK(t.count("bbbb") == 0);
+// 	vector<pair<string, string> > v3;
+// 	v3.push_back(make_pair("ID", "1"));
+// 	v3.push_back(make_pair("aaaa", "1"));
+// 	Record r3(v3);
+// 	t.insert(r3);
+// 	BOOST_CHECK(t.count("ID") == 2);
+// 	BOOST_CHECK(t.count("aaaa") == 1);
+// 	BOOST_CHECK(t.count("bbbb") == 0);
+// }
+
+BOOST_AUTO_TEST_CASE(count_test_regular)
 {
 	Table t;
 	t.add_column("ID", Table::integer);
 	t.add_column("aaaa", Table::integer);
 	t.add_column("bbbb", Table::integer);
-	vector<string> names;
-	names.push_back("ID");
-	t.set_key(names);
-	Record r1;
-	t.insert(r1);
-	BOOST_CHECK(t.count("ID") == 0);
-	BOOST_CHECK(t.count("aaaa") == 0);
-	BOOST_CHECK(t.count("bbbb") == 0);
-	vector<pair<string, string> > v2;
-	v2.push_back(make_pair("ID", "1"));
-	Record r2(v2);
-	t.insert(r2);
-	BOOST_CHECK(t.count("ID") == 1);
-	BOOST_CHECK(t.count("aaaa") == 0);
-	BOOST_CHECK(t.count("bbbb") == 0);
-	vector<pair<string, string> > v3;
-	v3.push_back(make_pair("ID", "1"));
-	v3.push_back(make_pair("aaaa", "1"));
-	Record r3(v3);
-	t.insert(r3);
-	BOOST_CHECK(t.count("ID") == 2);
-	BOOST_CHECK(t.count("aaaa") == 1);
-	BOOST_CHECK(t.count("bbbb") == 0);
-}
-
-BOOST_AUTO_TEST_CASE(count_test_regular)
-{
-	Table t;
 	vector<string> names;
 	names.push_back("ID");
 	t.set_key(names);
@@ -716,6 +724,7 @@ BOOST_AUTO_TEST_CASE(sum_works)
 	v1.push_back(make_pair("ID", "1"));
 	v1.push_back(make_pair("aaaa", "1"));
 	v1.push_back(make_pair("bbbb", "2"));
+	v1.push_back(make_pair("cccc", "0"));
 	Record r1(v1);
 	t.insert(r1);
 	BOOST_CHECK(t.sum<int>("ID") == 1);

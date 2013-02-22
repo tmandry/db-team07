@@ -229,6 +229,9 @@ template<typename T>
 T Table::sum(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
+  for (const pair<string, RecordType>& col : columns_)
+    if (col.first == column_name && (col.second != integer || col.second != floating))
+      throw InvalidOperationError("Column " + column_name + " is not numeric");
 
   T sum = 0;
   for (const Record& record : records_)
