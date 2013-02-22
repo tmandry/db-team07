@@ -1,4 +1,5 @@
 #include "set_updater.h"
+#include "table.h"
 
 #include <sstream>
 
@@ -8,7 +9,7 @@ SetUpdater::SetUpdater(string set_clause) {
   set_ = vector<Token>(set_.rbegin(), set_.rend());
 }
 
-void SetUpdater::update(Record record) {
+void SetUpdater::update(deque<Record>::iterator record) {
   record_ = record;
   tokens_ = set_;
   return parse_update();
@@ -20,7 +21,7 @@ void SetUpdater::parse_update() {
     Token op = stream_get();
     Token value = stream_get();
 
-    record_.set(attribute.second, value.second);
+    record_->set(attribute.second, value.second);
   }
 
   if (tokens_.size() != 0)

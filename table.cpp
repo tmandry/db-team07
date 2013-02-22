@@ -1,6 +1,8 @@
 #include "table.h"
 #include "exception.h"
 #include "record.h"
+#include "where_matcher.h"
+#include "set_updater.h"
 
 Table::Table() {
 	records_ = deque<Record> ();
@@ -110,10 +112,6 @@ void Table::insert(const Record& record) {
 	records_.push_back(record);
 }
 
-Table::TableIterator Table::drop(Table::TableIterator it) {
-  return records_.erase(it);
-}
-
 Table::TableIterator Table::begin() const {
   return records_.begin();
 }
@@ -167,10 +165,36 @@ int Table::count(string column_name) const {
   return ret;
 }
 
-bool Table::has_column(string column_name) const
-{
+void Table::drop_where(string where) {
+  deque<Record>::iterator it = records_.begin();
+  WhereMatcher matcher(where);
+  while (it != records_.end()) {
+    if (matcher.does_match(*it)) {
+      it = drop(it);
+    } else {
+      it++;
+    }
+  }
+}
+
+void Table::update(string where, string set) {
+  deque<Record>::iterator it;
+  WhereMatcher matcher(where);
+  SetUpdater updater(set);
+  for (it = records_.begin(); it != records_.end(); it++) {
+    if (matcher.does_match(*it)) {
+      updater.update(it);
+    }
+  }
+}
+
+bool Table::has_column(string column_name) const {
   for (auto name_type : columns_) {
     if (name_type.first == column_name) return true;
   }
   return false;
+}
+
+deque<Record>::iterator Table::drop(deque<Record>::iterator record) {
+  return records_.erase(record);
 }

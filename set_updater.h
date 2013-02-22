@@ -7,16 +7,17 @@
 
 #include <vector>
 #include <string>
+#include <deque>
 using namespace std;
 
 class EXPORT SetUpdater {
 public:
   SetUpdater(string set_clause);
-  void update(Record record);
+  void update(deque<Record>::iterator record);
 private:
   vector<Token> tokens_;
   vector<Token> set_;
-  Record record_;
+  deque<Record>::iterator record_;
 
   void parse_update();
 

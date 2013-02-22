@@ -1,6 +1,5 @@
 #include "database.h"
 #include "where_matcher.h"
-#include "set_updater.h"
 
 #include <sstream>
 #include <iostream>
@@ -64,7 +63,7 @@ Table* Database::query(string select, string from, string where) {
   if (columns_to_select[0] != "*")
     for (unsigned int i = 0; i < all_columns.size(); i++) {
       // if column in table is not in selected columns, remove it from query
-      if (!(find(columns_to_select.begin(), columns_to_select.end(), all_columns[i].first) != columns_to_select.end()))
+      if (find(columns_to_select.begin(), columns_to_select.end(), all_columns[i].first) == columns_to_select.end())
         results->del_column(all_columns[i].first);
     }
 
@@ -73,30 +72,12 @@ Table* Database::query(string select, string from, string where) {
 
 void Database::delete_from(string from, string where) {
 	Table *source = table(from);
-
-  Table::TableIterator it = source->begin();
-  WhereMatcher matcher(where);
-  while (it != source->end()) {
-    if (matcher.does_match(*it)) {
-      it = source->drop(it);
-    } else {
-      it++;
-    }
-  }
+  source->drop_where(where);
 }
 
 void Database::update(string table_name, string where, string set) {
   Table *source = table(table_name);
-
-  Table::TableIterator it;
-  WhereMatcher matcher(where);
-  SetUpdater updater(set);
-  for (it = source->begin(); it != source->end(); it++) {
-    if (matcher.does_match(*it)) {
-      updater.update(*it);
-    }
-  }
-
+  source->update(where, set);
 }
 
 void Database::save(string filename) {
@@ -118,10 +99,13 @@ Database Database::copy() {
 vector<string> Database::split_select(string select) {
   stringstream ss(select);
 
-  istream_iterator<string> begin(ss);
-  istream_iterator<string> end;
-  vector<string> result(begin, end);
-  std::copy(result.begin(), result.end(), ostream_iterator<string>(cout, "\n"));
+  vector<string> result;
+  string buffer;
+  while (ss >> buffer) {
+    if (buffer[buffer.size() - 1] == ',')
+      buffer.pop_back();
+    result.push_back(buffer);
+  }
 
   return result;
 }

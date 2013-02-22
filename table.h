@@ -126,14 +126,6 @@ public:
   void insert(const Record& record);
 
   /**
-   * Removes a row from the table.
-   *
-   * \returns An iterator pointing to the new location of the element that followed the
-   *          last element erased by the function call.
-   */
-  TableIterator drop(TableIterator);
-
-  /**
    * Returns an iterator to the first record in the table.
    *
    * A Table can be treated as a container. The *begin* and *end* functions
@@ -221,8 +213,12 @@ public:
   template<typename T>
   T max(string column_name) const;
 
+  void drop_where(string where);
+  void update(string where, string set);
+
 private:
   bool has_column(string column_name) const;
+  deque<Record>::iterator drop(deque<Record>::iterator record);
 
   deque<Record> records_;
   ColumnList columns_;
@@ -239,7 +235,7 @@ T Table::sum(string column_name) const {
     sum += record.get<T>(column_name);
   return sum;
   // TODO find away to throw this exception
-  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
+  // throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 template<typename T>
@@ -252,7 +248,7 @@ T Table::min(string column_name) const {
     min = std::min(min, record.get<T>(column_name));
   return min;
   // TODO find away to throw this exception
-  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
+  // throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 template<typename T>
@@ -265,7 +261,7 @@ T Table::max(string column_name) const {
     max = std::max(max, record.get<T>(column_name));
   return max;
   // TODO find away to throw this exception
-  throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
+  // throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
 
 #endif  // TABLE_H_
