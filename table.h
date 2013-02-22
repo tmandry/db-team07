@@ -201,8 +201,6 @@ public:
    */
   template<typename T>
   T min(string column_name) const;
-  template<>
-  string min(string column_name) const;
 
   /**
    * Computes the largest value of all values in the given column in the table.
@@ -213,8 +211,6 @@ public:
    */
   template<typename T>
   T max(string column_name) const;
-  template<>
-  string max(string column_name) const;
 
   void drop_where(string where);
   void update(string where, string set);
@@ -252,27 +248,11 @@ T Table::min(string column_name) const {
     throw InvalidTypeError("Invalid type conversion in column: " + column_name);
 
   if (records_.size() == 0)
-    return NULL;
+    return 0;
 
-  T min = numeric_limits<T>::max();
-
+  T min = records_[0].get<T>(column_name);
   for (const Record& record : records_)
     min = std::min(min, record.get<T>(column_name));
-  return min;
-}
-
-template <>
-string Table::min(string column_name) const {
-  if (!has_column(column_name))
-    throw ColumnDoesNotExistError("Could not find column " + column_name);
-
-  if (records_.size() == 0)
-    return NULL;
-
-  string min = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-
-  for (const Record& record : records_)
-    min = std::min(min, record.get<string>(column_name));
   return min;
 }
 
@@ -284,27 +264,11 @@ T Table::max(string column_name) const {
     throw InvalidTypeError("Invalid type conversion in column: " + column_name);
 
   if (records_.size() == 0)
-    return NULL;
+    return T();
 
-  T max = numeric_limits<T>::min();
-
+  T max = records_[0].get<T>(column_name);
   for (const Record& record : records_)
     max = std::max(max, record.get<T>(column_name));
-  return max;
-}
-
-template <>
-string Table::max(string column_name) const {
-  if (!has_column(column_name))
-    throw ColumnDoesNotExistError("Could not find column " + column_name);
-
-  if (records_.size() == 0)
-    return NULL;
-
-  string max;
-
-  for (const Record& record : records_)
-    max = std::max(max, record.get<string>(column_name));
   return max;
 }
 
