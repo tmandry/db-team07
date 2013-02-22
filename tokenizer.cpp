@@ -1,6 +1,7 @@
 #include "tokenizer.h"
 
 #include <sstream>
+#include <regex>
 
 Tokenizer::Tokenizer(TokenizerType type, string source) {
   type_ = type;
@@ -147,6 +148,9 @@ vector<Token> Tokenizer::tokenize() {
         }
         break;
     }
+
+    if (!is_valid(tokens_.back().first, tokens_.back().second))
+      throw QuerySyntaxError(tokens_.back().second + " not a valid token");
   }
 
   return tokens_;
@@ -196,4 +200,29 @@ void Tokenizer::stream_unget(char c) {
 /** Searches through a string for a specific character */
 bool Tokenizer::string_contains(string source, char target) {
   return (source.find(target) != string::npos);
+}
+
+bool Tokenizer::is_valid(TokenType type, string str) {
+  switch (type) {
+  case value_numeral: {
+    static const regex rx("[0-9.]*");
+    return regex_match(str, rx);
+  }
+  case value_varchar:
+    return true;
+  case value_date: {
+    static const regex rx("[0-9]{4}/[0-9]{2}/[0-9]{2}");
+    return regex_match(str, rx);
+  }
+  case value_time: {
+    static const regex rx("[0-9]{2}:[0-9]{2}:[0-9]{2}");
+    return regex_match(str, rx);
+  }
+  case attribute_name: {
+    static const regex rx("[a-zA-Z0-9-_]+");
+    return regex_match(str, rx);
+  }
+  default:
+    return true;
+  }
 }

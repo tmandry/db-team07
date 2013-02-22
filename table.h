@@ -219,6 +219,8 @@ public:
   void drop_where(string where);
   void update(string where, string set);
 
+  static bool is_valid(RecordType type, string str);
+
 private:
   bool has_column(string column_name) const;
   deque<Record>::iterator drop(deque<Record>::iterator record);

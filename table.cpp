@@ -4,6 +4,8 @@
 #include "where_matcher.h"
 #include "set_updater.h"
 
+#include <regex>
+
 Table::Table() {
 	records_ = deque<Record> ();
 	columns_ = ColumnList ();
@@ -196,4 +198,25 @@ bool Table::has_column(string column_name) const {
 
 deque<Record>::iterator Table::drop(deque<Record>::iterator record) {
   return records_.erase(record);
+}
+
+bool Table::is_valid(RecordType type, string str) {
+  switch (type) {
+  case integer: {
+    static const regex int_rx("[0-9]*");
+    return regex_match(str, int_rx);
+  }
+  case floating: {
+    static const regex float_rx("[0-9.]*");
+    return regex_match(str, float_rx);
+  }
+  case varchar:
+    return true;
+  case date:
+    return Tokenizer::is_valid(value_date, str);
+  case time:
+    return Tokenizer::is_valid(value_time, str);
+  default:
+    return false;
+  }
 }

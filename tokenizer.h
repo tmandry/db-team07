@@ -52,6 +52,9 @@ public:
 
   /** Returns a vector of tokens parsed from a where clause */
   vector<Token> tokenize();
+
+  static bool is_valid(TokenType type, string str);
+
 private:
   char stream_get(bool include_space = true);
   void stream_unget(char c);
