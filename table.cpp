@@ -28,7 +28,7 @@ Table* Table::clone_structure() {
 void Table::add_column(string column_name, RecordType type) {
 	columns_.push_back(make_pair(column_name, type));
   for (deque<Record>::iterator it = records_.begin(); it != records_.end(); it++)
-    it->add_column(column_name);
+    it->set(column_name, "");
 }
 
 void Table::del_column(string column_name) {

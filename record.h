@@ -56,8 +56,6 @@ public:
    */
   RecordIterator end() const;
 
-  void add_column(string column_name);
-
   /**
     Get the value of a field by column name. The field is converted to the
     requested C++ type if possible (otherwise, an \a InvalidTypeError is thrown.)
@@ -78,15 +76,13 @@ public:
 
   /**
     Set the value of a field by column name. The field is converted from the
-    given C++ type if possible (otherwise, an \a InvalidTypeError is thrown.)
+    given C++ type if possible.
 
     Example:
     ~~~{.cpp}
     myRecord.set("age", 21);
     myRecord.set("name", "Abraham Lincoln");
     ~~~
-
-    Throws a \a ColumnDoesNotExistError if \a field doesn't exist.
 
     \param T The type of *field*; usually inferred by the compiler.
     \param field The name of the field (column) in the record.
@@ -140,7 +136,7 @@ void Record::set(string field, T new_value) {
     }
   }
 
-  throw ColumnDoesNotExistError("Cannot find column " + field);
+  values_.push_back(make_pair(field, string_value));
 }
 
 template< typename T >

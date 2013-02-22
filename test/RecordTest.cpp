@@ -52,7 +52,8 @@ BOOST_AUTO_TEST_CASE( record_test1 )
 
 	// exception testing
 	BOOST_CHECK_THROW( temp_rec1.get<string>("last_name"),  ColumnDoesNotExistError);
-	BOOST_CHECK_THROW( temp_rec1.set("last_name", "What last name?"), ColumnDoesNotExistError);
+  // we removed this from our api
+	// BOOST_CHECK_THROW( temp_rec1.set("last_name", "What last name?"), ColumnDoesNotExistError);
 	// Record::set was not specified to do any type checking
   // BOOST_CHECK_THROW( temp_rec1.set("birthdate", 11111), InvalidTypeError);
 
