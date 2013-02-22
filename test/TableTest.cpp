@@ -796,7 +796,7 @@ BOOST_AUTO_TEST_CASE(sum_type_exception)
 	v1.push_back(make_pair("bbbb", "1"));
 	Record r1(v1);
 	t.insert(r1);
-	BOOST_CHECK_THROW(t.sum<char>("aaaa"), InvalidTypeError);
+	BOOST_CHECK_THROW(t.sum<char>("aaaa"), InvalidOperationError);
 }
 
 //MIN TESTS

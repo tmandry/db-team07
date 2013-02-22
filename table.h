@@ -188,7 +188,6 @@ public:
    *
    * Throws a \a ColumnDoesNotExistError if \a column_name doesn't exist.
    * Throws an \a InvalidOperationError if the column is not numeric.
-   * Throws an \a InvalidTypeError if the column cannot be converted to type T.
    */
   template<typename T>
   T sum(string column_name) const;
