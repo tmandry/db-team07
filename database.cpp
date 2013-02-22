@@ -96,6 +96,11 @@ void Database::merge(const Database& database) {
 }
 
 Database Database::copy() {
+  Database clone;
+  
+  for (auto name_table : tables_)
+    clone.add_table(name_table.first, new Table(*name_table.second));
+
   return Database();
 }
 
