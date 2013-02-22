@@ -149,7 +149,7 @@ public:
     Make a copy of this database
     \returns a one-for-one copy / clone of this database
    */
-  Database copy();
+  Database* copy();
 
 private:
   typedef map<string, Table*> TableMap;

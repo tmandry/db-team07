@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(merge_test)
 	a.merge(b);
 	BOOST_CHECK(a.table_if_exists("Test2") != NULL);
 	BOOST_CHECK(a.table_if_exists("Test3") != NULL);
-	Database c = a.copy();
-	BOOST_CHECK(c.table("Test2") == a.table("Test2"));
+	Database *c = a.copy();
+	BOOST_CHECK(c->table("Test2") == a.table("Test2"));
 }
 BOOST_AUTO_TEST_SUITE_END()
