@@ -89,7 +89,10 @@ void Database::load(string filename) {
 }
 
 void Database::merge(const Database& database) {
-
+  for (auto name_table : database.tables_) {
+    delete tables_[name_table.first];  // returns NULL if it doesn't exist, and delete does nothing
+    tables_[name_table.first] = new Table(*name_table.second);
+  }
 }
 
 Database Database::copy() {
