@@ -244,8 +244,8 @@ BOOST_AUTO_TEST_CASE( query_test2 )
 	BOOST_CHECK_THROW(d.update("table", "column1 > 1", "column2 = 'yolo'"), TableDoesNotExistError);
 
 	BOOST_CHECK_THROW(d.query("column1", "table1", "column1 (>) 1"), QuerySyntaxError);
-	BOOST_CHECK_THROW(d.delete_from("Table1", "column1 =! 1"), QuerySyntaxError);
-	BOOST_CHECK_THROW(d.update("table", "column1 > 1", "column2 =< 'yolo'"), QuerySyntaxError);
+	BOOST_CHECK_THROW(d.delete_from("table1", "column1 =! 1"), QuerySyntaxError);
+	BOOST_CHECK_THROW(d.update("table1", "column1 > 1", "column2 =< 'yolo'"), QuerySyntaxError);
 }
 
 BOOST_AUTO_TEST_CASE( query_test3 )
