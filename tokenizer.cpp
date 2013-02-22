@@ -100,6 +100,26 @@ vector<Token> Tokenizer::tokenize() {
         tokens_.push_back( Token(conditional_eq, "=") );
         break;
 
+      // operand_add
+      case '+':
+        tokens_.push_back( Token(operand_add, "+") );
+        break;
+
+      // operand_subtract
+      case '-':
+        tokens_.push_back( Token(operand_subtract, "-") );
+        break;
+
+      // operand_multiply
+      case '*':
+        tokens_.push_back( Token(operand_multiply, "*") );
+        break;
+
+      // operand_divide
+      case '/':
+        tokens_.push_back( Token(operand_divide, "/") );
+        break;
+
       // catch all for value_* and attribute_name
       default:
 

@@ -30,7 +30,12 @@ enum TokenType {
   value_date            = 14,
   value_time            = 15,
 
-  attribute_name        = 16
+  attribute_name        = 16,
+
+  operand_add           = 17,
+  operand_subtract      = 18,
+  operand_multiply      = 19,
+  operand_divide        = 20
 };
 
 enum TokenizerType {

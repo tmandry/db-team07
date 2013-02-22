@@ -18,7 +18,14 @@ private:
   vector<Token> tokens_;
   vector<Token> set_;
   deque<Record>::iterator record_;
-
+  
+  template<typename T>;
+  T primary();
+  template<typename T>;
+  T term();
+  template<typename T>;
+  T expression();
+  
   void parse_update();
 
   Token stream_get();
