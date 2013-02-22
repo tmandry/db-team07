@@ -106,14 +106,15 @@ vector<Token> Tokenizer::tokenize() {
         //   if single quote: varchar
         //   if numeral: float, date, time, or int
         //   else: attribute name
-        if (c == 39) {
+        const char QUOTE = 39;
+        if (c == QUOTE) {
           string value;
 
           while (true) {
             c = stream_get(false);
 
             // if single quote, we are done
-            if (c == 39) {
+            if (c == QUOTE) {
               break;
             }
 
@@ -121,11 +122,11 @@ vector<Token> Tokenizer::tokenize() {
           }
 
           tokens_.push_back( Token(value_varchar, value) );
-        } else if (c >= 48 && c <= 57) {
+        } else if (c >= '0' && c <= '9') {
           string value(1, c);
 
           while (c = stream_get(false)) {
-            if (c >= 48 && c <= 57 || c == 46 || c == 47 || c == 58) {
+            if (c >= '0' && c <= '9' || c == '.' || c == '/' || c == ':') {
               value.push_back(c);
             } else {
               stream_unget(c);
@@ -134,9 +135,9 @@ vector<Token> Tokenizer::tokenize() {
           }
 
           // discern between floats, dates, times, and ints
-          if (string_contains(value, 47)) {
+          if (string_contains(value, '/')) {
             tokens_.push_back( Token(value_date, value) );
-          } else if (string_contains(value, 58)) {
+          } else if (string_contains(value, ':')) {
             tokens_.push_back( Token(value_time, value) );
           } else {
             tokens_.push_back( Token(value_numeral, value) );
@@ -152,7 +153,7 @@ vector<Token> Tokenizer::tokenize() {
 }
 
 void Tokenizer::handle_attribute_name(char first) {
-  string attribute(1,first);
+  string attribute(1, first);
   while (true) {
     first = stream_get(false);
     if (first != NULL && first != ' ' && first != ')') {
@@ -174,8 +175,8 @@ char Tokenizer::stream_get(bool skip_space) {
   // find the next, nonspace (and if update, noncomma) character
   do {
     if (skip_space) {
-      c = 32;
-      while (c == 32) {
+      c = ' ';
+      while (c == ' ') {
         c = stream_[stream_.size() - 1];
         stream_.pop_back();
       }
@@ -194,10 +195,5 @@ void Tokenizer::stream_unget(char c) {
 
 /** Searches through a string for a specific character */
 bool Tokenizer::string_contains(string source, char target) {
-  for (unsigned i = 0; i < source.size(); i++) {
-    if (source[i] == target) {
-      return true;
-    }
-  }
-  return false;
+  return (source.find(target) != string::npos);
 }
