@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_except_test)
 	b->add_column("key", Table::integer);
 	b->add_column("third", Table::varchar);
 	std::vector<std::string> k2;
-	k2.push_back("key");
+	k2.push_back("third");
 	b->set_key(k2);
 	r21.set("key", "1");
 	r21.set("third", "dcb");
@@ -404,7 +404,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test3)
 	b->insert(r22);
 	b->insert(r23);
 	Table c = a->natural_join(*b);
-	BOOST_CHECK(c.size() == 3);
+	BOOST_CHECK(c.size() == 2);
 	/*
 		key		second				key		third
 		1		a					1		dcb

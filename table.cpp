@@ -156,7 +156,47 @@ Table Table::cross_join(const Table& other) const {
 }
 
 Table Table::natural_join(const Table& other) const {
-  	return Table();
+  if (other.key_.empty())
+    throw InvalidOperationError("Second table in natural join should have a key");
+
+  ColumnList join_columns(columns_);
+  ColumnList other_columns(other.columns_);
+  for (string key_col : other.key_) {
+    if (!has_column(key_col))
+      throw InvalidOperationError("Could not find key column "+key_col+" from second table in first table");
+
+    // Remove from other_columns to avoid duplicates
+    for (ColumnList::iterator it = other_columns.begin(); it < other_columns.end(); ++it) {
+      if (it->first == key_col) {
+        other_columns.erase(it);
+        break;
+      }
+    }
+  }
+  join_columns.insert(join_columns.end(), other_columns.begin(), other_columns.end());
+
+  Table join(join_columns);
+  for (const Record& record1 : records_) {
+    for (Record record2 : other.records_) {
+      bool is_match = true;
+      for (string key_col : other.key_) {
+        if (record1.get<string>(key_col) != record2.get<string>(key_col)) {
+          is_match = false;
+          break;
+        }
+
+        // Remove column from record2 to avoid duplicates
+        record2.erase(key_col);
+      }
+
+      if (is_match) {
+        Record join_record(record1);
+        join_record.join(record2);
+        join.insert(join_record);
+      }
+    }
+  }
+  return join;
 }
 
 int Table::count(string column_name) const {
