@@ -12,24 +12,25 @@ using namespace std;
 enum TokenType {
   bool_or               = 0,
   bool_and              = 1,
+  bool_not              = 2,
 
-  parenthesis_left      = 2,
-  parenthesis_right     = 3,
+  parenthesis_left      = 3,
+  parenthesis_right     = 4,
 
-  conditional_eq        = 4,
-  conditional_neq       = 5,
-  conditional_lt        = 6,
-  conditional_gt        = 7,
-  conditional_lte       = 8,
-  conditional_gte       = 9,
+  conditional_eq        = 5,
+  conditional_neq       = 6,
+  conditional_lt        = 7,
+  conditional_gt        = 8,
+  conditional_lte       = 9,
+  conditional_gte       = 10,
 
-  value_undefined_type  = 10,
-  value_numeral         = 11,
-  value_varchar         = 12,
-  value_date            = 13,
-  value_time            = 14,
+  value_undefined_type  = 11,
+  value_numeral         = 12,
+  value_varchar         = 13,
+  value_date            = 14,
+  value_time            = 15,
 
-  attribute_name        = 15
+  attribute_name        = 16
 };
 
 enum TokenizerType {

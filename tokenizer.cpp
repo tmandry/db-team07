@@ -48,6 +48,19 @@ vector<Token> Tokenizer::tokenize() {
           handle_attribute_name('A');
         }
 
+      // bool_not
+      case 'N':
+        c = stream_get();
+        second = stream_get();
+        if (c == 'O' && second == 'T') {
+          tokens_.push_back( Token(bool_not, "NOT") );
+          break;
+        } else {
+          stream_unget(second);
+          stream_unget(c);
+          handle_attribute_name('N');
+        }
+
       // condtional_lt / condtional_lte
       case '<':
         c = stream_get();

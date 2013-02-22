@@ -108,8 +108,21 @@ bool WhereMatcher::parse_conditional() {
   throw QuerySyntaxError("Unknown type, internal error");
 }
 
-bool WhereMatcher::parse_or() {
+bool WhereMatcher::parse_not() {
   bool left = parse_conditional();
+  Token t = stream_get();
+
+  if (t.first == bool_not) {
+    return !left;
+  } else {
+    if (t.first != value_undefined_type)
+      stream_unget(t);
+    return left;
+  }
+}
+
+bool WhereMatcher::parse_or() {
+  bool left = parse_not();
   Token t = stream_get();
 
   if (t.first == bool_or) {

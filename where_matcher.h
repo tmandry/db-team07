@@ -19,6 +19,7 @@ private:
   Record record_;
 
   bool parse_conditional();
+  bool parse_not();
   bool parse_or();
   bool parse_and();
 
