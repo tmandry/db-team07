@@ -114,7 +114,6 @@ T Record::get(string field) const {
       return value;
     }
   }
-
   throw ColumnDoesNotExistError(field);
 }
 
@@ -124,7 +123,10 @@ void Record::set(string field, T new_value) {
   ss << new_value;
   string string_value;
   ss >> string_value;
-  // throw InvalidTypeError("Invalid type: " + string_value);
+
+  if (!TypeIsValid<T>::new_value)
+    throw InvalidTypeError("Invalid type: " + string_value);
+
   for(unsigned i = 0; i < values_.size(); i++) {
     if(values_[i].first == field) {
       values_[i].second = string_value;
@@ -137,3 +139,29 @@ void Record::set(string field, T new_value) {
 }
 
 #endif
+// check for type string
+template< class T >
+struct TypeIsValid
+{
+    static const bool value = false;
+};
+
+template<>
+struct TypeIsValid< string >
+{
+    static const bool value = true;
+};
+
+// check for type int
+template<>
+struct TypeIsValid< int >
+{
+    static const bool value = true;
+};
+ 
+// check for type floating point
+template<>
+struct TypeIsValid< double >
+{
+    static const bool value = true;
+};
