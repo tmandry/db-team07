@@ -142,8 +142,7 @@ void Record::set(string field, T new_value) {
   throw ColumnDoesNotExistError("Cannot find column " + field);
 }
 
-
-template< class T >
+template< typename T >
 struct TypeIsValid
 {
     static const bool value = false;
@@ -152,6 +151,13 @@ struct TypeIsValid
 // check for type string
 template<>
 struct TypeIsValid< string >
+{
+    static const bool value = true;
+};
+
+// check for type string literal
+template<>
+struct TypeIsValid< const char * >
 {
     static const bool value = true;
 };
@@ -175,6 +181,5 @@ struct TypeIsValid < float >
 {
   static const bool value = true;
 };
-
 
 #endif
