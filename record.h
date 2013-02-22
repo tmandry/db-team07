@@ -124,13 +124,14 @@ void Record::set(string field, T new_value) {
   ss << new_value;
   string string_value;
   ss >> string_value;
-
+  // throw InvalidTypeError("Invalid type: " + string_value);
   for(unsigned i = 0; i < values_.size(); i++) {
     if(values_[i].first == field) {
       values_[i].second = string_value;
       return;
     }
   }
+  throw ColumnDoesNotExistError("Cannot find column " + field);
   // add to end
   values_.push_back(make_pair(field, string_value));
 }
