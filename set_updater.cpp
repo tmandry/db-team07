@@ -21,6 +21,13 @@ void SetUpdater::parse_update() {
     Token op = stream_get();
     Token value = stream_get();
 
+    if (attribute.first != attribute_name)
+      throw QuerySyntaxError("Expected attribute name: " + attribute.second);
+    if (op.first != conditional_eq)
+      throw QuerySyntaxError("Expected equals operator: " + op.second);
+    if (value.first > 15 || value.first > 15)
+      throw QuerySyntaxError("Expected literal value: " + value.second);
+
     record_->set(attribute.second, value.second);
   }
 
