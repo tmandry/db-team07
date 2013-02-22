@@ -21,6 +21,10 @@ Record::RecordIterator Record::end() const {
   return values_.end();
 }
 
+void Record::add_column(string column_name) {
+  values_.push_back(make_pair(column_name, ""));
+}
+
 void Record::join(const Record& other) {
   values_.insert(values_.end(), other.values_.begin(), other.values_.end());
 }

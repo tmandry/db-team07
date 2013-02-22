@@ -424,10 +424,11 @@ BOOST_AUTO_TEST_CASE(insert_key_exception)
 	vector<string> names;
 	names.push_back("ID");
 	t.set_key(names);
-	Record r1;
-	r1.set("ID", 1);
-	r1.set("aaaa", 1);
-	r1.set("bbbb", 1);
+	vector<pair<string, string> > v1;
+	v1.push_back(make_pair("ID", "1"));
+	v1.push_back(make_pair("aaaa", "1"));
+	v1.push_back(make_pair("bbbb", "1"));
+  Record r1(v1);
 	t.insert(r1);
 	vector<pair<string, string> > v2;
 	v2.push_back(make_pair("ID", "1"));

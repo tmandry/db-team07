@@ -56,6 +56,8 @@ public:
    */
   RecordIterator end() const;
 
+  void add_column(string column_name);
+
   /**
     Get the value of a field by column name. The field is converted to the
     requested C++ type if possible (otherwise, an \a InvalidTypeError is thrown.)
@@ -105,6 +107,9 @@ template <typename T>
 T Record::get(string field) const {
   for (unsigned i = 0; i < values_.size(); i++) {
     if (values_[i].first == field) {
+      if (values_[i].second == "")
+        return NULL;
+
       stringstream ss;
       ss << values_[i].second;
 
@@ -127,15 +132,14 @@ void Record::set(string field, T new_value) {
   string string_value;
   ss >> string_value;
 
-  for(unsigned i = 0; i < values_.size(); i++) {
-    if(values_[i].first == field) {
+  for (unsigned i = 0; i < values_.size(); i++) {
+    if (values_[i].first == field) {
       values_[i].second = string_value;
       return;
     }
   }
+
   throw ColumnDoesNotExistError("Cannot find column " + field);
-  // add to end
-  values_.push_back(make_pair(field, string_value));
 }
 
 // check for type string
