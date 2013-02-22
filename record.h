@@ -119,13 +119,13 @@ T Record::get(string field) const {
 
 template <typename T>
 void Record::set(string field, T new_value) {
+  if (!TypeIsValid<T>::value)
+    throw InvalidTypeError("Invalid type conversion: " + field);
+
   stringstream ss;
   ss << new_value;
   string string_value;
   ss >> string_value;
-
-  if (!TypeIsValid<T>::new_value)
-    throw InvalidTypeError("Invalid type: " + string_value);
 
   for(unsigned i = 0; i < values_.size(); i++) {
     if(values_[i].first == field) {
@@ -138,7 +138,6 @@ void Record::set(string field, T new_value) {
   values_.push_back(make_pair(field, string_value));
 }
 
-#endif
 // check for type string
 template< class T >
 struct TypeIsValid
@@ -165,3 +164,6 @@ struct TypeIsValid< double >
 {
     static const bool value = true;
 };
+
+
+#endif
