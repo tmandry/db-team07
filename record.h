@@ -119,6 +119,7 @@ T Record::get(string field) const {
       return value;
     }
   }
+
   throw ColumnDoesNotExistError(field);
 }
 
