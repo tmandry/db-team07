@@ -246,7 +246,14 @@ T Table::min(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
 
-  T min = numeric_limits<T>::min();
+  if (records_.size() == 0)
+    return NULL;
+
+  T min;
+  if (!TypeIsString<T>::value) {
+    min = numeric_limits<T>::max();
+  }
+
   for (const Record& record : records_)
     min = std::min(min, record.get<T>(column_name));
   return min;
@@ -259,12 +266,31 @@ T Table::max(string column_name) const {
   if (!has_column(column_name))
     throw ColumnDoesNotExistError("Could not find column " + column_name);
 
-  T max = numeric_limits<T>::max();
+  if (records_.size() == 0)
+  return NULL;
+
+  T max;
+  if (!TypeIsString<T>::value) {
+    max = numeric_limits<T>::min();
+  }
+
   for (const Record& record : records_)
     max = std::max(max, record.get<T>(column_name));
   return max;
   // TODO find away to throw this exception
   // throw InvalidTypeError("Type " + record.get<T>(column_name) + " is invalid.");
 }
+
+template< class T >
+struct TypeIsString
+{
+    static const bool value = false;
+};
+
+template<>
+struct TypeIsString< string >
+{
+    static const bool value = true;
+};
 
 #endif  // TABLE_H_

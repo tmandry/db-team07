@@ -495,10 +495,11 @@ BOOST_AUTO_TEST_CASE(end_test)
 	v2.push_back(make_pair("bbbb", "2"));
 	Record r2(v2);
 	t.insert(r2);
-	test = *t.end();
-	BOOST_CHECK(test.get<int>("ID") == 2);
-	BOOST_CHECK(test.get<int>("aaaa") == 2);
-	BOOST_CHECK(test.get<int>("bbbb") == 2);
+  // you can't derefernece t.end(), t.end() points to the point in memory AFTER the last record
+	// test = *t.end();
+	// BOOST_CHECK(test.get<int>("ID") == 2);
+	// BOOST_CHECK(test.get<int>("aaaa") == 2);
+	// BOOST_CHECK(test.get<int>("bbbb") == 2);
 }
 
 //FIRST TESTS
