@@ -101,7 +101,7 @@ Database Database::copy() {
   for (auto name_table : tables_)
     clone.add_table(name_table.first, new Table(*name_table.second));
 
-  return Database();
+  return clone;
 }
 
 vector<string> Database::split_select(string select) {
