@@ -97,7 +97,7 @@ public:
 
   /**
    * Defines the tuple of columns used as a key.
-   * This function must be called before inserting any rows into the table.
+   * This function must be called on an empty table.
    *
    * \param columns A list of column names that make up the key.
    *
