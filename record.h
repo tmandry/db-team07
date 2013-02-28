@@ -74,6 +74,9 @@ public:
   template <typename T>
   T get(string field) const;
 
+  template <>
+  string get<string>(string field) const;
+
   /**
     Set the value of a field by column name. The field is converted from the
     given C++ type if possible.
@@ -90,6 +93,9 @@ public:
   template <typename T>
   void set(string field, T new_value);
 
+  template <>
+  void set<string>(string field, string new_value);
+
 protected:
   friend class Table;
   void join(const Record& other);
@@ -101,10 +107,12 @@ private:
 
 template <typename T>
 T Record::get(string field) const {
+  // This does not work for strings, because stringstream will only give you the
+  // first word.
   for (unsigned i = 0; i < values_.size(); i++) {
     if (values_[i].first == field) {
       if (values_[i].second == "")
-        return NULL;
+        return T();
 
       stringstream ss;
       ss << values_[i].second;
@@ -119,8 +127,20 @@ T Record::get(string field) const {
   throw ColumnDoesNotExistError(field);
 }
 
+template <>
+string Record::get<string>(string field) const {
+  for (unsigned i = 0; i < values_.size(); i++) {
+    if (values_[i].first == field) {
+      return values_[i].second;
+    }
+  }
+  throw ColumnDoesNotExistError(field);
+}
+
 template <typename T>
 void Record::set(string field, T new_value) {
+  // This does not work for strings, because stringstream will only give you the
+  // first word.
   if (!TypeIsValid<T>::value)
     throw InvalidTypeError("Invalid type conversion: " + field);
 
@@ -137,6 +157,18 @@ void Record::set(string field, T new_value) {
   }
 
   values_.push_back(make_pair(field, string_value));
+}
+
+template <>
+void Record::set<string>(string field, string new_value) {
+  for (unsigned i = 0; i < values_.size(); i++) {
+    if (values_[i].first == field) {
+      values_[i].second = new_value;
+      return;
+    }
+  }
+
+  values_.push_back(make_pair(field, new_value));
 }
 
 template< typename T >
@@ -165,7 +197,7 @@ struct TypeIsValid< int >
 {
     static const bool value = true;
 };
- 
+
 // check for type floating point
 template<>
 struct TypeIsValid< double >

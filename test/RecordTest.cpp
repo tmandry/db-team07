@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE( record_test1 )
 
 	// add records
 	vector<pair<string, string>> rec1;
-	rec1.push_back(make_pair("first_name", "Pam"));
+	rec1.push_back(make_pair("first_name", "Pam Matthews"));
 	rec1.push_back(make_pair("age", "64"));
 	rec1.push_back(make_pair("birthdate", "1948/09/26"));
 	rec1.push_back(make_pair("weight", "148.7"));
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE( record_test1 )
 	t1.insert(r1);
 
 	Record temp_rec1 = t1.at(0);
-	BOOST_CHECK( temp_rec1.get<string>("first_name") == "Pam");
+	BOOST_CHECK( temp_rec1.get<string>("first_name") == "Pam Matthews");
 	BOOST_CHECK( temp_rec1.get<int>("age") == 64);
 	BOOST_CHECK( temp_rec1.get<string>("birthdate") == "1948/09/26");
 	BOOST_CHECK_CLOSE( temp_rec1.get<float>("weight"), 148.7, TOL);
