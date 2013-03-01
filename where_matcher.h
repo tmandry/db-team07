@@ -25,6 +25,8 @@ private:
 
   template <typename T>
   T parse_value();
+  template <>
+  string parse_value();
 
   Token stream_get();
   void stream_unget(Token token);
@@ -32,19 +34,30 @@ private:
 
 template <typename T>
 T WhereMatcher::parse_value() {
-    Token t = stream_get();
+  Token t = stream_get();
 
-    if (t.first == attribute_name) {
-      return record_.get<T>(t.second);
-    } else {
-      stringstream ss;
-      ss << t.second;
+  if (t.first == attribute_name) {
+    return record_.get<T>(t.second);
+  } else {
+    stringstream ss;
+    ss << t.second;
 
-      T value;
-      ss >> value;
+    T value;
+    ss >> value;
 
-      return value;
-    }
+    return value;
   }
+}
+
+template <>
+string WhereMatcher::parse_value() {
+  Token t = stream_get();
+
+  if (t.first == attribute_name) {
+    return record_.get<string>(t.second);
+  } else {
+    return t.second;
+  }
+}
 
 #endif
